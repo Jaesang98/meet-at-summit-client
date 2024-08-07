@@ -5,7 +5,7 @@ import '../assets/styles/log.css';
 function LOGIN({ show, handleClose }) {
     return (
         <div>
-            <Modal show={true} onHide={handleClose} centered>
+            <Modal show={show} onHide={handleClose} centered>
                 <Modal.Header closeButton>
                     <Modal.Title className="">로그인</Modal.Title>
                 </Modal.Header>

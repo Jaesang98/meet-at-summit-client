@@ -42,3 +42,18 @@ img {
     color: red;
     font-weight: 700;
 }
+
+.nodata {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 150px; /* 적절한 높이로 설정하세요 */
+    background: url('../../assets/img/sign-complete.png') no-repeat center 20px;
+    background-size: 100px; /* 이미지 크기를 적절히 설정하세요 */
+    text-align: center;
+    color: #666; /* 텍스트 색상 */
+    font-size: 18px; /* 텍스트 크기 */
+    font-family: Arial, sans-serif; /* 폰트 설정 */
+    padding-top: 130px; /* 이미지 높이 + 약간의 여유 공간 */
+}

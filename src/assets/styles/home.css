@@ -89,13 +89,13 @@ ul.search-list {
     flex-wrap: wrap;
 }
 
-.filter-option {
+.hom-filter-option {
     display: flex;
     padding: 10px;
     position: relative;
 }
 
-.filter-option span {
+.hom-filter-option span {
     margin-left: 10px;
     margin-right: 60px;
     font-weight: 600;
@@ -103,7 +103,11 @@ ul.search-list {
     position: relative;
 }
 
-.filter-option .option-map::after {
+.option-map, .option-loc  {
+    cursor: pointer;
+}
+
+.hom-filter-option .option-map::after {
     content: '';
     display: inline-block;
     width: 16px;
@@ -116,7 +120,7 @@ ul.search-list {
     transform: translateY(-50%);
 }
 
-.filter-option .option-loc::after {
+.hom-filter-option .option-loc::after {
     content: '';
     display: inline-block;
     width: 16px;
@@ -129,7 +133,7 @@ ul.search-list {
     transform: translateY(-50%);
 }
 
-.filter-option .option-map {
+.hom-filter-option .option-map {
     margin-right: 0; /* option-map의 오른쪽 여백 제거 */
 }
 
@@ -166,4 +170,29 @@ ul.search-list {
     border-top: 1px solid #6c757d; /* hr의 색상과 두께 조정 */
     margin: 10px 0; /* 위아래 여백 조정 */
     width: 100%; /* 전체 너비 차지 */
+}
+
+.hom-open, .hom-event {
+    display: inline-block; /* 인라인 블록으로 설정 */
+    vertical-align: middle; /* 수직 중앙 정렬 */
+    padding: 5px 10px; /* 여백 조정 */
+    font-size: 15px; /* 글씨 크기 */
+    font-weight: bold; /* 굵은 글씨 */
+    border-radius: 12px; /* 둥근 모서리 */
+    text-align: center; /* 텍스트 가운데 정렬 */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* 부드러운 그림자 효과 */
+    margin-right: 5px; /* 요소 간의 간격 조정 */
+}
+
+.hom-open {
+    background: #8a3ffc; /* 더 밝고 현대적인 보라색 */
+    color: #ffffff; /* 흰색 텍스트 */
+    border: 2px solid #6f00d2; /* 더 어두운 보라색 테두리 */
+}
+
+.hom-event {
+    background: #64b5f6; /* 부드러운 파스텔 블루 */
+    color: #ffffff; /* 흰색 텍스트 */
+    border: 2px solid #42a5f5; /* 더 어두운 파스텔 블루 테두리 */
+    text-transform: uppercase; /* 대문자로 변환 */
 }

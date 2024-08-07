@@ -17,7 +17,7 @@ function HOM1010() {
                 </div>
 
                 <div className='search-filter'>
-                    <div className='filter-option'>
+                    <div className='hom-filter-option'>
                         <span className='option-loc'>현재 내 주변에서 찾기</span>
                         <span className='option-map'>지도로 찾기</span>
                     </div>

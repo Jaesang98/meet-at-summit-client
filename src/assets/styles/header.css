@@ -1,6 +1,7 @@
 .headerContain .navbar-brand.logo {
     color: #5200DF;
     font-weight: 900;
+    cursor: pointer;
 }
 
 .headerContain .btn.headBtn {

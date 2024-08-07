@@ -3,8 +3,39 @@ import Footer from '../../components/footer';
 import { Card, Col, Row } from 'react-bootstrap';
 import '../../assets/styles/style.css'
 import '../../assets/styles/home.css'
+import { useNavigation } from '../../util';
+import { useState } from 'react';
 
 function HOM1000() {
+    const navigation = useNavigation();
+
+    const [cardData, setCardData] = useState([
+        {
+            "title": "Magic Garden",
+            "image_url": "https://picsum.photos/400/500",
+            "is_open": "Y",
+            "has_event": "N",
+            "rating": 4.8,
+            "favorites_count": 1200
+        },
+        {
+            "title": "Space Exploration",
+            "image_url": "https://picsum.photos/seed/picsum/400/500",
+            "is_open": "N",
+            "has_event": "Y",
+            "rating": 4.3,
+            "favorites_count": 850
+        },
+        {
+            "title": "Pirate's Treasure",
+            "image_url": "https://picsum.photos/id/237/400/500",
+            "is_open": "Y",
+            "has_event": "Y",
+            "rating": 4.6,
+            "favorites_count": 1025
+        }
+    ]);
+
     return (
         <div>
             <Header></Header>
@@ -19,23 +50,22 @@ function HOM1000() {
 
                 <div className='mt-4'>
                     <h3>최근 본 클라이밍장</h3>
-                    <Row xs={1} md={3} className="g-4 cardGroup">
-                        {/* {cardData.map((card, idx) => ( */}
-                        {Array.from({ length: 3 }).map((_, idx) => (
+                    <Row xs={0} md={3} className="g-4 cardGroup">
+                        {cardData.map((card, idx) => (
                             <Col key={idx}>
-                                <Card>
-                                    <Card.Img variant="top" src={require('../../assets/img/recentcliming.jpg')} />
+                                <Card onClick={() => { navigation.pageOpen('/SRC_1100') }}>
+                                    <Card.Img variant="top" src={card.image_url} />
                                     <Card.Body>
-                                        <Card.Title>더클라임 클라이밍 짐앤샵 양재점</Card.Title>
-                                        <Card.Text>
-                                            <span>새로오픈</span>
-                                            <span> 이벤트</span>
+                                        <Card.Title>{card.title}</Card.Title>
+                                        <Card.Text className='mt-3'>
+                                            {card.is_open == "Y" ? <span className='hom-open'>새로오픈</span> : null}
+                                            {card.has_event == "Y" ? <span className='hom-event'> 이벤트</span> : null}
                                         </Card.Text>
                                         <Card.Text>
                                             <img src={require('../../assets/img/star.svg').default}></img>
                                             <span className='cardGrade'>
-                                                <strong>4.5</strong>
-                                                <span>(1,071)</span>
+                                                <strong>{card.rating}</strong>
+                                                <span> ({card.favorites_count})</span>
                                             </span>
                                         </Card.Text>
                                     </Card.Body>

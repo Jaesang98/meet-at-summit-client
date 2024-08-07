@@ -1,8 +1,10 @@
 .com-head {
     position: sticky;
     top: 0;
-    background-color: #fff; /* 배경색 지정 */
-    z-index: 1000; /* 다른 요소들 위에 표시되도록 z-index 설정 */
+    background-color: #fff;
+    /* 배경색 지정 */
+    z-index: 1000;
+    /* 다른 요소들 위에 표시되도록 z-index 설정 */
     padding: 10px;
     display: flex;
     justify-content: space-between;
@@ -28,7 +30,7 @@
 }
 
 
-.wrapper {
+.hom-wrapper {
     padding: 20px;
     position: relative;
     overflow-x: hidden;
@@ -39,40 +41,44 @@
     justify-content: space-between;
 }
 
-.wrapper .tabs-box {
+.hom-tabs-box {
     display: flex;
     gap: 12px;
     list-style: none;
     overflow-x: hidden;
-    scroll-behavior: smooth;
 }
 
-.tabs-box.dragging {
-    scroll-behavior: auto;
-    cursor: grab;
+.hom-tab {
+    display: flex;
+    align-items: center;
 }
 
-.tabs-box .tab {
+.checkbox {
+    display: none;
+}
+
+.hom-tab-label {
     cursor: pointer;
     white-space: nowrap;
     padding: 5px 20px;
     border-radius: 30px;
     border: 1px solid #d8d5f2;
+    /* transition: background 0.3s, color 0.3s, border-color 0.3s; */
 }
 
-.tabs-box .tab:hover {
+.hom-tab-label:hover {
     background: #efedfb;
 }
 
-.tabs-box.dragging .tab {
-    user-select: none;
-    pointer-events: none;
-}
-
-.tabs-box .tab.active {
+/* 체크박스와 레이블을 연동하여 클릭 시 스타일 변경 */
+.checkbox:checked + .hom-tab-label {
     color: #fff;
     background: #5200DF;
     border-color: transparent;
+}
+
+.com-button {
+    /* 버튼 스타일을 여기서 정의할 수 있습니다 */
 }
 
 .com-button {
