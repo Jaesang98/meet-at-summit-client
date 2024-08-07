@@ -1,0 +1,169 @@
+
+
+.cardGroup {
+    padding: 20px;
+}
+
+.cardList {
+    margin: 10px;
+}
+
+.cardGrade {
+    margin-left: 5px;
+}
+
+.climing-list {
+    display: flex;
+    justify-content: space-between;
+    padding: 40px;
+}
+
+.climing-list .clim-open {
+    width: 50%;
+}
+
+.climing-list .clim-closest {
+    width: 50%;
+    margin-left: 50px;
+}
+
+.climing-list .clim-img{
+    height: 200px;
+}
+.clim-bottom {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.clim-bottom .clim-commu,
+.clim-bottom .clim-info {
+    width: 48%;
+}
+
+.clim-bottom .clim-comuDt {
+    margin-left: auto;
+    color: #6c757d;
+}
+
+.clim-bottom .clim-info img{
+    width: 520px;
+    height: 330px;
+}
+
+.search-filter {
+    margin-top: 10px;
+    width: 100%;
+    height: 500px;
+    border-radius: 10px 10px 10px 10px;
+    border: solid 1px #dee2e6;
+    padding: 20px;
+}
+
+.search-filter .btn-option {
+    border-radius: 10px;
+    background-color: white;
+    border: solid 1px #a5a9ad;
+    padding: 4px 20px 4px 4px;
+    position: relative;
+}
+
+.search-filter .btn-option::after {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url('../../assets/img/delete.svg');
+    background-size: cover;
+    position: absolute;
+    right: 5px;
+    top: 50%; 
+    transform: translateY(-50%);
+}
+
+ul.search-list {
+    list-style: none;
+    padding: 10px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.filter-option {
+    display: flex;
+    padding: 10px;
+    position: relative;
+}
+
+.filter-option span {
+    margin-left: 10px;
+    margin-right: 60px;
+    font-weight: 600;
+    font-size: 18px;
+    position: relative;
+}
+
+.filter-option .option-map::after {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url('../../assets/img/map.svg');
+    background-size: cover;
+    position: absolute;
+    left: -20px;
+    top: 50%; 
+    transform: translateY(-50%);
+}
+
+.filter-option .option-loc::after {
+    content: '';
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    background-image: url('../../assets/img/geo-alt.svg');
+    background-size: cover;
+    position: absolute;
+    left: -20px;
+    top: 50%; 
+    transform: translateY(-50%);
+}
+
+.filter-option .option-map {
+    margin-right: 0; /* option-map의 오른쪽 여백 제거 */
+}
+
+.search-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    gap: 10px;
+}
+
+.search-actions select {
+    padding: 10px;
+    border-radius: 5px;
+    color: black;
+}
+
+.search-actions button {
+    padding: 10px 20px;
+    background-color: #5200DF;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    color: white;
+    white-space: nowrap;
+}
+
+.search-actions button:hover {
+    background-color: #a070f4;
+}
+
+.divider {
+    border: none;
+    border-top: 1px solid #6c757d; /* hr의 색상과 두께 조정 */
+    margin: 10px 0; /* 위아래 여백 조정 */
+    width: 100%; /* 전체 너비 차지 */
+}

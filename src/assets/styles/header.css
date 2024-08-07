@@ -1,0 +1,16 @@
+.headerContain .navbar-brand.logo {
+    color: #5200DF;
+    font-weight: 900;
+}
+
+.headerContain .btn.headBtn {
+    background-color: #5200DF;
+}
+
+.headerContain .navbar-nav.headNavar {
+    margin: auto;
+}
+
+.headerContain .navbar-nav.headNavar .nav-link.headLink {
+    margin-right: 20px;
+}

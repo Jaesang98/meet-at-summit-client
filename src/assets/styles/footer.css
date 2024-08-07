@@ -1,0 +1,38 @@
+.footer {
+  background-color: #f8f9fa;
+  padding: 20px 0;
+  position: relative;
+  transform: translateY(0%);
+  width: 100%;
+}
+
+.footer-left {
+  text-align: left;
+}
+
+.footer-logo {
+  color: #5200DF;
+  font-weight: 900;
+  margin-bottom: 10px;
+}
+
+.footer p {
+  margin: 5px 0;
+}
+
+.footer-right {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.footer-nav .nav-link {
+  margin-left: 15px;
+  color: #929097;
+  font-weight: 600;
+  margin-bottom: 100px;
+}
+
+.footer-nav .nav-link:hover {
+  color: #3a00b8;
+}

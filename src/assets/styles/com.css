@@ -1,0 +1,939 @@
+.com-head {
+    position: sticky;
+    top: 0;
+    background-color: #fff; /* 배경색 지정 */
+    z-index: 1000; /* 다른 요소들 위에 표시되도록 z-index 설정 */
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.com-head .commu-log {
+    background-image: url('../../assets/img/commu-log.png');
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 25px;
+    /* 이미지와 텍스트 간격 조정 */
+    background-size: 20px 20px;
+    /* 이미지 크기 조정 */
+    height: 20px;
+    /* 필요시 높이 조정 */
+    display: flex;
+    align-items: center;
+}
+
+.com-head .input-group {
+    width: 40%;
+}
+
+
+.wrapper {
+    padding: 20px;
+    position: relative;
+    overflow-x: hidden;
+    background: #fff;
+    border-radius: 13px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.wrapper .tabs-box {
+    display: flex;
+    gap: 12px;
+    list-style: none;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+.tabs-box.dragging {
+    scroll-behavior: auto;
+    cursor: grab;
+}
+
+.tabs-box .tab {
+    cursor: pointer;
+    white-space: nowrap;
+    padding: 5px 20px;
+    border-radius: 30px;
+    border: 1px solid #d8d5f2;
+}
+
+.tabs-box .tab:hover {
+    background: #efedfb;
+}
+
+.tabs-box.dragging .tab {
+    user-select: none;
+    pointer-events: none;
+}
+
+.tabs-box .tab.active {
+    color: #fff;
+    background: #5200DF;
+    border-color: transparent;
+}
+
+.com-button {
+    background: #5200DF;
+    /* 버튼 배경 색상 */
+    color: white;
+    /* 버튼 글씨 색상 */
+    padding: 10px 20px;
+    /* 버튼의 패딩 */
+    font-size: 16px;
+    /* 버튼 글씨 크기 */
+    border-radius: 8px;
+    /* 버튼의 둥근 모서리 */
+    cursor: pointer;
+    /* 마우스 커서가 포인터로 변환 */
+    border: none;
+}
+
+.com-button:hover {
+    background-color: #a070f4;
+}
+
+.com-button-del {
+    color: black;
+    /* 버튼 글씨 색상 */
+    padding: 10px 20px;
+    /* 버튼의 패딩 */
+    font-size: 16px;
+    /* 버튼 글씨 크기 */
+    border-radius: 8px;
+    /* 버튼의 둥근 모서리 */
+    cursor: pointer;
+    /* 마우스 커서가 포인터로 변환 */
+    border: none;
+}
+
+.com-button-del:hover {
+    background-color: #9f9e9f;
+}
+
+.com-main {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    /* 가운데 정렬 */
+}
+
+.com-tab-item {
+    padding: 15px 30px;
+    /* 크기 조정 */
+    font-size: 18px;
+    /* 폰트 크기 조정 */
+    cursor: pointer;
+    position: relative;
+    font-weight: normal;
+    color: #666;
+    border-bottom: 3px solid transparent;
+    /* 기본 상태에서는 선이 없음 */
+    transition: color 0.3s, border-bottom 0.3s;
+    margin: 0 10px;
+    /* 탭 항목 간의 간격 조정 */
+    width: 50%;
+    text-align: center;
+}
+
+.com-tab-item.com-active {
+    font-weight: bold;
+    color: #000;
+    /* 활성화된 탭의 텍스트 색상 */
+    border-bottom: 2px solid #000;
+    /* 활성화된 탭의 밑줄 */
+    width: 50%;
+}
+
+.com-tab-content {
+    padding: 20px;
+    text-align: center;
+}
+
+/* 전체 리스트 스타일 */
+.list-group {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    /* 기본 리스트 스타일 제거 */
+}
+
+/* 리스트 항목 스타일 */
+.list-group-item {
+    display: flex;
+    justify-content: space-between;
+    /* 좌우 정렬 */
+    align-items: center;
+    /* 수직 중앙 정렬 */
+    padding: 10px 20px;
+    /* 내부 여백 */
+    border: 1px solid #ddd;
+    /* 테두리 색상 */
+    border-radius: 8px;
+    /* 둥근 모서리 */
+    background-color: #fff;
+    /* 배경 색상 */
+    margin-bottom: 10px;
+    /* 항목 간 간격 */
+    transition: background-color 0.3s, box-shadow 0.3s;
+    /* 호버 시 효과 */
+}
+
+/* 리스트 항목 호버 상태 */
+.list-group-item:hover {
+    background-color: #f4f4f4;
+    /* 호버 시 배경 색상 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* 호버 시 그림자 효과 */
+}
+
+/* 왼쪽 콘텐츠 스타일 */
+.list-item-left {
+    display: flex;
+    align-items: center;
+}
+
+/* 오른쪽 콘텐츠 스타일 */
+.list-item-right {
+    display: flex;
+    align-items: center;
+}
+
+/* 카테고리 이름 스타일 */
+.list-item-category {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    margin-right: 20px;
+    /* 제목과 간격 */
+}
+
+/* 글 제목 스타일 */
+.list-item-title {
+    font-size: 14px;
+    color: #666;
+}
+
+/* 댓글 수, 작성자, 날짜 스타일 */
+.list-item-comments,
+.list-item-author,
+.clim-comuDt {
+    margin-left: 40px;
+    /* 항목 사이의 간격 */
+    font-size: 14px;
+    color: #666;
+}
+
+.list-item-comments {
+    background-image: url('../img/chat.svg');
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 25px;
+    /* 이미지와 텍스트 간격 조정 */
+    background-size: 20px 20px;
+    /* 이미지 크기 조정 */
+    height: 20px;
+    /* 필요시 높이 조정 */
+    display: flex;
+    align-items: center;
+}
+
+.list-item-recruiting {
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 20px;
+    /* 제목과 간격 */
+    color: #5200DF;
+}
+
+/* 모집완료 항목 스타일 */
+.list-item-completed {
+    font-size: 16px;
+    font-weight: bold;
+    margin-right: 20px;
+    /* 제목과 간격 */
+    color: #666;
+}
+
+/* 참여 수 스타일 */
+.list-item-partycomments {
+    font-size: 14px;
+    color: #666;
+    /* '참여' 글씨 색상 */
+}
+
+.party-number {
+    color: #5200DF;
+    /* 숫자 색상 */
+    font-weight: bold;
+    margin-left: 5px;
+    /* 숫자와 '참여' 사이의 간격 */
+}
+
+/* 경로 스타일 */
+.com-path {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+    /* 경로와 버튼 사이의 간격 */
+}
+
+.com-buttons {
+    display: flex;
+    gap: 10px;
+    /* 버튼 사이의 간격 */
+}
+
+
+/* 폼 그룹 스타일 */
+.form-group {
+    position: relative;
+    /* 버튼을 레이블에 상대적으로 배치하기 위해 설정 */
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+.form-group-border {
+    border-radius: 10px 10px 10px 10px;
+    border: solid 1px #dee2e6;
+    width: 98%;
+    margin: auto;
+}
+
+/* 레이블 스타일 */
+.form-label {
+    display: block;
+    font-size: 14px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+    /* 레이블과 입력 필드 사이의 간격 */
+}
+
+/* 셀렉트 박스 스타일 */
+.form-select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* 텍스트 입력 필드 스타일 */
+.form-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+}
+
+/* 텍스트 영역 스타일 */
+.form-textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    color: #333;
+    min-height: 150px;
+    /* 기본 높이 설정 */
+    resize: vertical;
+    /* 세로로만 조절 가능 */
+}
+
+/* 첨부파일 정보 스타일 */
+.attachment-info {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 5px;
+    /* 정보와 노트 사이의 간격 */
+}
+
+/* 첨부파일 노트 스타일 */
+.attachment-note {
+    font-size: 12px;
+    color: #999;
+    margin-bottom: 10px;
+    /* 노트와 파일 리스트 사이의 간격 */
+}
+
+/* 첨부파일 리스트 스타일 */
+.attachment-list {
+    display: flex;
+    /* Flexbox를 사용하여 항목들을 가로로 배치 */
+    flex-wrap: wrap;
+    /* 화면 너비를 초과하면 자동으로 줄바꿈 */
+    gap: 10px;
+    /* 항목 간의 간격 */
+}
+
+/* 첨부파일 스타일 */
+.com-file {
+    display: inline-block;
+    padding: 10px 10px 10px 40px;
+    /* 왼쪽 패딩을 넓게 설정하여 이미지와 텍스트 간의 간격 확보 */
+    border-radius: 10px;
+    border: 1px solid #dee2e6;
+    background-color: #f8f9fa;
+    /* 배경 색상 */
+    color: #333;
+    /* 텍스트 색상 */
+    font-size: 14px;
+    /* 폰트 크기 */
+    width: 200px;
+    /* 고정 너비 */
+    text-overflow: ellipsis;
+    /* 내용이 길 경우 생략부호 추가 */
+    white-space: nowrap;
+    /* 내용이 한 줄로 표시되도록 */
+    overflow: hidden;
+    /* 넘치는 내용 숨기기 */
+    transition: background-color 0.3s, border-color 0.3s;
+    /* 호버 시 효과 */
+
+    background-image: url('../img/file.png');
+    background-repeat: no-repeat;
+    background-position: 10px center;
+    /* 이미지 위치 조정 */
+    background-size: 20px 20px;
+    /* 이미지 크기 조정 */
+}
+
+/* 첨부파일 호버 상태 */
+.com-file:hover {
+    background-color: #e9ecef;
+    /* 호버 시 배경 색상 */
+    border-color: #ced4da;
+    /* 호버 시 테두리 색상 */
+    cursor: pointer;
+}
+
+/* 첨부하기 버튼 스타일 */
+.attach-button {
+    position: absolute;
+    /* 레이블에 상대적으로 위치 */
+    top: 10px;
+    /* 상단에서 10px 떨어진 위치 */
+    right: 10px;
+    /* 우측에서 10px 떨어진 위치 */
+    background: #5200DF;
+    /* 배경 색상 */
+    color: white;
+    /* 텍스트 색상 */
+    border: none;
+    /* 테두리 없음 */
+    border-radius: 5px;
+    /* 둥근 모서리 */
+    padding: 8px 16px;
+    /* 내부 여백 */
+    font-size: 14px;
+    /* 폰트 크기 */
+    cursor: pointer;
+    /* 클릭 가능한 포인터 */
+    transition: background-color 0.3s, color 0.3s;
+    /* 호버 시 효과 */
+}
+
+/* 버튼 호버 상태 */
+.attach-button:hover {
+    background: #3b00a4;
+    /* 호버 시 배경 색상 */
+}
+
+/* 파일 카운트 스타일 */
+.file-count {
+    font-size: 14px;
+    /* 폰트 크기 */
+    color: #666;
+    /* 텍스트 색상 */
+    margin-left: 10px;
+    /* 레이블 텍스트와 파일 카운트 간 간격 */
+}
+
+/* 이미지 컨테이너 스타일 */
+.image-container {
+    padding: 10px;
+    /* 내부 여백 */
+    display: flex;
+    /* 플렉스 박스를 사용하여 이미지 정렬 */
+    flex-wrap: wrap;
+    /* 컨테이너 너비를 초과할 경우 줄바꿈 */
+    gap: 10px;
+    /* 이미지 간의 간격 */
+    align-items: flex-start;
+    /* 이미지들을 컨테이너의 상단에 정렬 */
+    justify-content: flex-start;
+    /* 이미지들을 왼쪽 정렬 */
+}
+
+/* 이미지 래퍼 스타일 */
+.image-wrapper {
+    position: relative;
+    /* 버튼을 이미지에 상대적으로 배치하기 위해 */
+}
+
+/* 업로드된 이미지 스타일 */
+.uploaded-image {
+    max-width: 200px;
+    /* 이미지의 최대 너비를 설정 */
+    height: auto;
+    /* 이미지 비율 유지 */
+    border-radius: 8px;
+    /* 둥근 모서리 */
+    border: 1px solid #dee2e6;
+    /* 테두리 색상 */
+}
+
+/* 제거 버튼 스타일 */
+.remove-button {
+    position: absolute;
+    /* 이미지에 상대적으로 위치 */
+    top: 5px;
+    /* 상단에서 5px 떨어진 위치 */
+    right: 5px;
+    /* 우측에서 5px 떨어진 위치 */
+    background: rgba(255, 255, 255, 0.7);
+    /* 배경 색상 */
+    border: none;
+    /* 테두리 없음 */
+    border-radius: 50%;
+    /* 원형 버튼 */
+    width: 20px;
+    /* 버튼 너비 */
+    height: 20px;
+    /* 버튼 높이 */
+    text-align: center;
+    /* 텍스트 중앙 정렬 */
+    line-height: 20px;
+    /* 텍스트 수직 중앙 정렬 */
+    color: #333;
+    /* 텍스트 색상 */
+    font-size: 16px;
+    /* 폰트 크기 */
+    cursor: pointer;
+    /* 마우스 포인터를 손가락으로 변경 */
+
+    background-image: url('../img/delete.svg');
+    background-repeat: no-repeat;
+    background-size: 20px 20px;
+    /* 이미지 크기 조정 */
+}
+
+/* 정보 헤더 스타일 */
+.info-header {
+    position: absolute;
+    top: 10px;
+    left: 20px;
+    /* 좌측 상단에 배치 */
+}
+
+.info-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+}
+
+/* 정보 섹션 스타일 */
+.info-section {
+    margin-top: 40px;
+    /* 상단에 충분한 여백 */
+}
+
+/* 라벨 스타일 */
+.form-label {
+    display: block;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
+}
+
+/* 인풋 스타일 */
+.form-input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    color: #333;
+    margin-right: 10px;
+    /* 옆에 다른 요소와 간격 유지 */
+    box-sizing: border-box;
+}
+
+/* 날짜 입력 스타일 */
+.date-input {
+    width: 300px;
+    /* 작은 너비 */
+}
+
+/* 체크박스 스타일 */
+.form-checkbox {
+    margin-right: 5px;
+}
+
+/* 종료일 체크박스 레이블 스타일 */
+.end-date-label {
+    align-items: center;
+}
+
+/* 참가비 및 통화 텍스트 스타일 */
+.entry-fee-container {
+    display: flex;
+    align-items: center;
+}
+
+.fee-input {
+    width: 100px;
+    /* 작은 너비 */
+}
+
+.currency-text {
+    font-size: 14px;
+    color: #333;
+    margin-left: 5px;
+}
+
+.detail-container {
+    font-family: Arial, sans-serif;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.detail-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* 제목과 버튼 사이에 공간을 최대한 활용 */
+    padding: 10px 0;
+    /* 상하 패딩 추가 */
+}
+
+
+.detail-question {
+    color: #555;
+    font-size: 1.2rem;
+    margin: 0;
+}
+
+.detail-title {
+    font-size: 1.5rem;
+    color: #333;
+    margin: 0;
+    /* 마진 제거 */
+    flex: 1;
+    /* 제목이 가능한 공간을 모두 차지하게 */
+    text-align: left;
+    /* 제목을 왼쪽 정렬 */
+}
+
+.detail-meta {
+    font-size: 0.9rem;
+    color: #888;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+.detail-contents {
+    height: 500px;
+    /* 고정 높이 */
+    padding: 10px;
+    /* 여백 */
+    overflow-y: auto;
+    /* 내용이 넘칠 때 수직 스크롤 표시 */
+    border-bottom: 2px solid #eee;
+}
+
+.detail-comments-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+
+/* 공통 스타일 */
+.icon-text {
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 30px;
+    /* 이미지와 텍스트 간격 조정 */
+    background-size: 20px 20px;
+    /* 이미지 크기 조정 */
+    height: 40px;
+    /* 높이 조정 */
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    /* 요소 간 간격 */
+    cursor: pointer;
+    /* 커서 모양 변경 */
+    transition: background-color 0.3s ease;
+    /* 배경색 변경 애니메이션 */
+    box-sizing: border-box;
+    /* 테두리와 패딩 포함 */
+}
+
+.icon-text2 {
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: 20px 20px;
+    /* 이미지 크기 조정 */
+    height: 40px;
+    /* 높이 조정 */
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    /* 요소 간 간격 */
+    cursor: pointer;
+    /* 커서 모양 변경 */
+    transition: background-color 0.3s ease;
+    /* 배경색 변경 애니메이션 */
+    box-sizing: border-box;
+    /* 테두리와 패딩 포함 */
+}
+
+/* 개별 스타일 */
+.favorite::before,
+.not-favorite::before,
+.clim-share::before {
+    content: '';
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    background-size: cover;
+}
+
+.favorite::before {
+    background-image: url('../../assets/img/heart-fill.svg');
+}
+
+.not-favorite::before {
+    background-image: url('../../assets/img/heart.svg');
+}
+
+.comment-count {
+    background-image: url('../../assets/img/chat.svg');
+}
+
+
+/* 댓글 스타일 */
+.detail-comments {
+    margin-top: 20px;
+}
+
+.comment {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    padding: 10px;
+    border-bottom: 2px solid #eee;
+    position: relative;
+}
+
+.comment-write {
+    margin-bottom: 15px;
+    padding: 10px;
+    border-bottom: 2px solid #eee;
+    display: flex;
+    flex-direction: column;
+    /* 세로 방향으로 배치 */
+}
+
+
+.comment-write textarea {
+    resize: none;
+    /* 텍스트 영역 크기 조절 비활성화 */
+}
+
+
+.comment-write button {
+    align-self: flex-end;
+    /* 버튼을 오른쪽으로 정렬 */
+}
+
+.comment-profile img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.comment-content {
+    flex: 1;
+}
+
+.comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    /* For absolute positioning of the button */
+    padding-right: 50px;
+    /* Adjust to ensure button doesn't overlap the content */
+}
+
+.comment-author {
+    font-weight: bold;
+}
+
+.comment-date {
+    font-size: 12px;
+    color: #888;
+}
+
+.comment-text {
+    font-size: 14px;
+    color: #333;
+    margin-top: 20px;
+    position: relative;
+    /* For absolute positioning of the button */
+    padding-right: 50px;
+    /* Adjust to ensure button doesn't overlap the content */
+}
+
+.iconMore {
+    background-image: url('../../assets/img/three-dots-vertical.svg');
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 25px;
+    /* 이미지와 텍스트 간격 조정 */
+    background-size: 20px 20px;
+    /* 이미지 크기 조정 */
+    height: 20px;
+    /* 필요시 높이 조정 */
+}
+
+.more-button-container {
+    display: flex;
+    align-items: center;
+    /* 버튼을 수직으로 중앙 정렬 */
+}
+
+.btnMore {
+    border: none;
+    background-color: white;
+    cursor: pointer;
+}
+
+.contentsicon {
+    background-image: url('../../assets/img/three-dots-vertical.svg');
+    background-repeat: no-repeat;
+    background-position: left center;
+    padding-left: 25px;
+    /* 이미지와 텍스트 간격 조정 */
+    background-size: 15px 15px;
+    /* 이미지 크기 조정 */
+    height: 20px;
+    /* 필요시 높이 조정 */
+}
+
+.more-button-contents {
+    position: absolute;
+    top: 10px;
+    /* Adjust the vertical position if needed */
+    right: 10px;
+    /* Adjust the horizontal position if needed */
+    z-index: 10;
+}
+
+.popover {
+    max-width: 150px;
+    /* 원하는 너비로 조정 */
+}
+
+.popover-body {
+    padding: 10px;
+    /* 내부 여백을 줄여서 크기 조절 */
+}
+
+.partyinfo {
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+}
+
+.partyinfo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.party-info-title {
+    font-size: 16px;
+}
+
+.party-info-right {
+    display: flex;
+    align-items: center;
+}
+
+.party-info-participants {
+    font-size: 16px;
+    margin-right: 10px;
+}
+
+.info-label {
+    font-weight: bold;
+    color: #333;
+}
+
+.info-content {
+    color: #666;
+}
+
+.party-number {
+    color: #5200DF;
+    font-weight: bold;
+}
+
+.btn-member-list {
+    background-color: #5200DF;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.btn-member-list:hover {
+    background-color: #3b00a4;
+}
+
+.party-info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.btn-participate {
+    background-color: #5200DF;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s, opacity 0.3s;
+}
+
+.btn-participate:hover:not(:disabled) {
+    background-color: #3b00a4;
+}
+
+.btn-participate:disabled {
+    background-color: #9B7CDC;
+    color: #E6E6E6;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
