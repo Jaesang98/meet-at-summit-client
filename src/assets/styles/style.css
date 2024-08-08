@@ -57,3 +57,7 @@ img {
     font-family: Arial, sans-serif; /* 폰트 설정 */
     padding-top: 130px; /* 이미지 높이 + 약간의 여유 공간 */
 }
+
+img {
+    cursor: pointer;
+}

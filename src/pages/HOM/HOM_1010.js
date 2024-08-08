@@ -9,11 +9,11 @@ function HOM1010() {
             <Header></Header>
 
             <section className='Container'>
-                <div class="input-group homInput">
-                    <span class="input-group-text">
+                <div className="input-group homInput">
+                    <span className="input-group-text">
                         <img src={require('../../assets/img/search.svg').default}></img>
                     </span>
-                    <input type="text" class="form-control" placeholder="내 주변 클라이밍장 찾기" aria-label="Input group example" />
+                    <input type="text" className="form-control" placeholder="내 주변 클라이밍장 찾기" aria-label="Input group example" />
                 </div>
 
                 <div className='search-filter'>
@@ -52,7 +52,7 @@ function HOM1010() {
                             </ul>
                         </div>
 
-                        <div class="search-actions mt-4">
+                        <div className="search-actions mt-4">
                             <Form.Select aria-label="Default select example">
                                 <option>1호선</option>
                                 <option value="1">One</option>

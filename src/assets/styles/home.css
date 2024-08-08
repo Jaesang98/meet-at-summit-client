@@ -196,3 +196,8 @@ ul.search-list {
     border: 2px solid #42a5f5; /* 더 어두운 파스텔 블루 테두리 */
     text-transform: uppercase; /* 대문자로 변환 */
 }
+
+.cardText {
+    display: flex;
+    align-items: center;
+}

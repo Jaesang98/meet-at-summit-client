@@ -1,8 +1,12 @@
-import { Modal, Button, Form, Row, Col } from 'react-bootstrap';
+import { Modal, Button, Form} from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/styles/log.css';
+import { useNavigation, useApi } from '../util';
 
 function LOGIN({ show, handleClose }) {
+    const navigation = useNavigation();
+    const requestApi = useApi();
+
     return (
         <div>
             <Modal show={show} onHide={handleClose} centered>
@@ -42,7 +46,7 @@ function LOGIN({ show, handleClose }) {
                             <a href="#!">아이디 찾기</a> | <a href="#!">비밀번호 찾기</a>
                         </div>
                         <div className="text-center">
-                            <span>아직 회원이 아니신가요?</span> <a href="#!">회원가입</a>
+                            <span>아직 회원이 아니신가요?</span><a href='' onClick={()=> {navigation.pageOpen('/LOG_2010')}}> 회원가입</a>
                         </div>
                     </Form>
                 </Modal.Body>

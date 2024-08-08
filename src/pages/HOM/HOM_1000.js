@@ -3,11 +3,33 @@ import Footer from '../../components/footer';
 import { Card, Col, Row } from 'react-bootstrap';
 import '../../assets/styles/style.css'
 import '../../assets/styles/home.css'
-import { useNavigation } from '../../util';
-import { useState } from 'react';
+import { useNavigation, useApi } from '../../util';
+import { useState, useEffect } from 'react';
 
 function HOM1000() {
     const navigation = useNavigation();
+    const requestApi = useApi();
+
+    //최근 본 클라이밍장
+    const [recentGymList, setRecentGymList] = useState([]);
+    const recentClimInfo = async () => {
+        try {
+            await requestApi.NetWork({
+                getYn: false,
+                method: "get",
+                url: "http://192.168.5.220:9091/api/climbing/main/",
+                body: {
+                    userId : '4'
+                },
+                callback(res) {
+                    setRecentGymList(res.data.recentGymList);
+                    
+                }
+            });
+        } catch (err) {
+            console.error('Error during API request:', err);
+        }
+    };
 
     const [cardData, setCardData] = useState([
         {
@@ -36,32 +58,36 @@ function HOM1000() {
         }
     ]);
 
+    useEffect(() => {
+        recentClimInfo();
+    }, []);
+
     return (
         <div>
             <Header></Header>
 
             <section className='Container'>
-                <div class="input-group homInput">
-                    <span class="input-group-text" id="basic-addon1">
+                <div className="input-group homInput" onClick={()=> {navigation.pageOpen('/HOM_1010')}}>
+                    <span className="input-group-text" id="basic-addon1">
                         <img src={require('../../assets/img/search.svg').default}></img>
                     </span>
-                    <input type="text" class="form-control" placeholder="내 주변 클라이밍장 찾기" aria-label="Input group example" aria-describedby="basic-addon1" />
+                    <input type="text" className="form-control" placeholder="내 주변 클라이밍장 찾기" aria-label="Input group example" aria-describedby="basic-addon1" />
                 </div>
 
                 <div className='mt-4'>
                     <h3>최근 본 클라이밍장</h3>
                     <Row xs={0} md={3} className="g-4 cardGroup">
-                        {cardData.map((card, idx) => (
+                        {recentGymList.map((card, idx) => (
                             <Col key={idx}>
                                 <Card onClick={() => { navigation.pageOpen('/SRC_1100') }}>
                                     <Card.Img variant="top" src={card.image_url} />
                                     <Card.Body>
-                                        <Card.Title>{card.title}</Card.Title>
+                                        <Card.Title>{card.gymName}</Card.Title>
                                         <Card.Text className='mt-3'>
-                                            {card.is_open == "Y" ? <span className='hom-open'>새로오픈</span> : null}
+                                            {card.newOpenYn == "Y" ? <span className='hom-open'>새로오픈</span> : null}
                                             {card.has_event == "Y" ? <span className='hom-event'> 이벤트</span> : null}
                                         </Card.Text>
-                                        <Card.Text>
+                                        <Card.Text className='cardText'>
                                             <img src={require('../../assets/img/star.svg').default}></img>
                                             <span className='cardGrade'>
                                                 <strong>{card.rating}</strong>
@@ -81,7 +107,7 @@ function HOM1000() {
                         <h3>새로 오픈했어요!</h3>
                         <div className="card mb-3">
                             <div className="row g-0">
-                                <div className="col-md-4">
+                                <div className="col-md-4" onClick={()=> {recentClimInfo()}}>
                                     <img src={require('../../assets/img/recentcliming.jpg')} className="img-fluid rounded-start clim-img" alt="..." />
                                 </div>
                                 <div className="col-md-8">
@@ -178,47 +204,24 @@ function HOM1000() {
                     <div className="container clim-commu">
                         <h4>커뮤니티</h4>
 
-                        <ul className="nav nav-tabs" id="categoryTabs" role="tablist">
+                        <ul className="nav nav-tabs">
                             <li className="nav-item" role="presentation">
-                                <button className="nav-link active" id="category1-tab" data-bs-toggle="tab" data-bs-target="#category1" type="button" role="tab" aria-controls="category1" aria-selected="true">카테고리 1</button>
+                                <button className="nav-link active" type="button">전체</button>
                             </li>
                             <li className="nav-item" role="presentation">
-                                <button className="nav-link" id="category2-tab" data-bs-toggle="tab" data-bs-target="#category2" type="button" role="tab" aria-controls="category2" aria-selected="false">카테고리 2</button>
+                                <button className="nav-link" type="button">자유 게시판</button>
                             </li>
                             <li className="nav-item" role="presentation">
-                                <button className="nav-link" id="category3-tab" data-bs-toggle="tab" data-bs-target="#category3" type="button" role="tab" aria-controls="category3" aria-selected="false">카테고리 3</button>
+                            <button className="nav-link" type="button">파티 모집</button>
                             </li>
                         </ul>
-                        <div className="tab-content" id="categoryTabsContent">
-                            <div className="tab-pane fade show active" id="category1" role="tabpanel" aria-labelledby="category1-tab">
-                            </div>
-                            <div className="tab-pane fade" id="category2" role="tabpanel" aria-labelledby="category2-tab">
-                            </div>
-                            <div className="tab-pane fade" id="category3" role="tabpanel" aria-labelledby="category3-tab">
-                            </div>
-                        </div>
 
                         <ul className="list-group list-group-flush">
                             <li className="list-group-item d-flex justify-content-between align-items-center">
-                                첫 번째 글
+                                <span>첫 번째 글</span>
                                 <span className='clim-comuDt'>2024.06.23</span>
                             </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                두 번째 글
-                                <span className='clim-comuDt'>2024.06.23</span>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                세 번째 글
-                                <span className='clim-comuDt'>2024.06.23</span>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                네 번째 글
-                                <span className='clim-comuDt'>2024.06.23</span>
-                            </li>
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                다섯 번째 글
-                                <span className='clim-comuDt'>2024.06.23</span>
-                            </li>
+                            <div className='nodata' style={{display: 'none'}}>게시물이 없습니다</div>
                         </ul>
                     </div>
                     <div className='clim-info'>
