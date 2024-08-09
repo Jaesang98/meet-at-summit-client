@@ -8,7 +8,7 @@ function COM1000() {
     const [notice, setnNotice] = useState("com-active");    //자유게시판 탭 클릭 유무
     const [party, setParty] = useState("");                 //파티모집 탭 클릭 유무
 
-     //카테고리 컨트롤
+    //카테고리 컨트롤
     const [category, setCategory] = useState([]);
     function categoryList(key) {
         let categoryCp = [...category];
@@ -31,10 +31,16 @@ function COM1000() {
                 <div className='com-head'>
                     <h3 className='commu-log'>커뮤니티</h3>
                     <div className="input-group">
+                        <select className="form-select me-4">
+                            <option>전체</option>
+                            <option>제목</option>
+                            <option>작성자</option>
+                        </select>
                         <span className="input-group-text">
                             <img src={require('../../assets/img/search.svg').default} alt="Search" />
                         </span>
-                        <input type="text" className="form-control" placeholder="글, 제목, 내용, 작성자로 검색" />
+                        <input type="text" className="form-control" placeholder="제목, 작성자로 검색" />
+                        <button className="com-button">검색</button>
                     </div>
                 </div>
 
@@ -66,7 +72,7 @@ function COM1000() {
                             <label htmlFor="tab5" className="hom-tab-label">시사/이슈</label>
                         </li>
                         <li className="hom-tab">
-                            <input type="checkbox" id="tab6" className="checkbox" onChange={() => categoryList("5")}/>
+                            <input type="checkbox" id="tab6" className="checkbox" onChange={() => categoryList("5")} />
                             <label htmlFor="tab6" className="hom-tab-label">기타</label>
                         </li>
                     </ul>

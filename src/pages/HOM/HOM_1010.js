@@ -2,8 +2,13 @@ import Header from '../../components/header'
 import { Form } from 'react-bootstrap';
 import '../../assets/styles/style.css'
 import '../../assets/styles/home.css'
+import * as util from '../../util';
+import { useState, useEffect } from 'react';
 
 function HOM1010() {
+    const navigation = util.useNavigation();
+    const requestApi = util.useApi();
+
     return (
         <div>
             <Header></Header>
@@ -67,7 +72,7 @@ function HOM1010() {
                                 <option value="3">Three</option>
                             </Form.Select>
 
-                            <button>검색</button>
+                            <button onClick={()=> {navigation.pageOpen('/SRC_1000')}}>검색</button>
                         </div>
                     </div>
                 </div>

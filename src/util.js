@@ -1,6 +1,7 @@
-import { useState, useCallback} from 'react';
+import { useState, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import moment from 'moment';
 
 //페이지 이동
 export function useNavigation() {
@@ -38,7 +39,7 @@ export function useApi() {
         getYn = false,
         method = 'get',
         url,
-        body = {},
+        params = {},
         callback
     }) => {
         setLoading(true);
@@ -52,7 +53,7 @@ export function useApi() {
                 response = await axios({
                     method,
                     url,
-                    data: body
+                    data: params
                 });
 
                 // getYn이 true이고 첫 번째 요청이 성공적이면 GET 요청 수행
@@ -61,7 +62,7 @@ export function useApi() {
                 }
             } else {
                 // method가 'get'인 경우
-                response = await axios.get(url, { params: body });
+                response = await axios.get(url, { params: params });
             }
 
             // 콜백 함수 호출
@@ -85,21 +86,34 @@ export function useApi() {
     };
 }
 
-//nice 본인인증
-export function useNiceAuth() {
-    const clientId = 'skawotkd12@naver.com'; // 네이버 개발자 센터에서 발급받은 Client ID
-    const redirectURI = encodeURIComponent('http://localhost:3000/auth/callback'); // 인증 후 리디렉션할 URL
-    const state = 'YOUR_RANDOM_STATE'; // CSRF 보호를 위한 랜덤 문자열
+// 날짜변환
+String.prototype.formattedDate = function(formatString = 'YYYY-MM-DD') {
+    // 입력된 문자열에서 숫자만 추출
+    const numericDate = this.replace(/\D/g, '');
+    let dateFormat;
 
-    const openNIDPopup = useCallback(() => {
-        const authUrl = `https://nid.naver.com/oauth2.0/authorize?response_type=token&client_id=${clientId}&redirect_uri=${redirectURI}&state=${state}`;
-        const width = 450;
-        const height = 600;
-        const left = (window.innerWidth / 2) - (width / 2);
-        const top = (window.innerHeight / 2) - (height / 2);
+    switch(numericDate.length) {
+        case 8: // YYYYMMDD
+            dateFormat = 'YYYYMMDD';
+            break;
+        case 12: // YYYYMMDDHHMM
+            dateFormat = 'YYYYMMDDHHmm';
+            break;
+        case 14: // YYYYMMDDHHMMSS
+            dateFormat = 'YYYYMMDDHHmmss';
+            break;
+        default:
+            // 다른 형식의 경우 자동 파싱 시도
+            return moment(this).format(formatString);
+    }
 
-        window.open(authUrl, 'NIDAuthPopup', `width=${width},height=${height},top=${top},left=${left}`);
-    }, [clientId, redirectURI, state]);
+    // 지정된 형식으로 파싱 및 포맷
+    const parsedDate = moment(numericDate, dateFormat);
+    
+    if (!parsedDate.isValid()) {
+        console.error('Invalid date format');
+        return 'Invalid Date';
+    }
 
-    return { openNIDPopup };
-}
+    return parsedDate.format(formatString);
+};

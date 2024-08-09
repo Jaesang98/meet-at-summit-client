@@ -3,27 +3,42 @@ import Footer from '../../components/footer';
 import { Card, Col, Row } from 'react-bootstrap';
 import '../../assets/styles/style.css'
 import '../../assets/styles/home.css'
-import { useNavigation, useApi } from '../../util';
+import * as util from '../../util';
 import { useState, useEffect } from 'react';
 
 function HOM1000() {
-    const navigation = useNavigation();
-    const requestApi = useApi();
+    const navigation = util.useNavigation();
+    const requestApi = util.useApi();
 
-    //최근 본 클라이밍장
-    const [recentGymList, setRecentGymList] = useState([]);
-    const recentClimInfo = async () => {
+    const [recentGymList, setRecentGymList] = useState([]);             //최근 본 클라이밍장
+    const [newOpenGymList, setNewOpenGymList] = useState([]);           //새로오픈 클라이밍장
+    const [locationGymList, setLocationGymList] = useState([]);         //내 주변 클라이밍장
+    const [communityList, setCommunityList] = useState([]);             //커뮤니티 원본
+    const [communityListFilter, setCommunityListFilter] = useState([]); //커뮤니티 필터링
+    const [communityCategory, setCommunityCategory] = useState("0");    //커뮤니티 구분 =>  0:전체 1:자유 2:파티
+
+    //카테고리 구분
+    const categoryChange = (category => {
+        setCommunityCategory(category);
+    })
+
+    //클라이밍장 정보 가져오기
+    const climInfo = async () => {
         try {
             await requestApi.NetWork({
                 getYn: false,
                 method: "get",
                 url: "http://192.168.5.220:9091/api/climbing/main/",
-                body: {
-                    userId : '4'
+                params: {
+                    userId: '4'
                 },
                 callback(res) {
                     setRecentGymList(res.data.recentGymList);
-                    
+                    setNewOpenGymList(res.data.newOpenGymList);
+                    setLocationGymList(res.data.locationGymList);
+                    setCommunityList(res.data.communityList);
+                    setCommunityListFilter(res.data.communityList);
+
                 }
             });
         } catch (err) {
@@ -31,43 +46,30 @@ function HOM1000() {
         }
     };
 
-    const [cardData, setCardData] = useState([
-        {
-            "title": "Magic Garden",
-            "image_url": "https://picsum.photos/400/500",
-            "is_open": "Y",
-            "has_event": "N",
-            "rating": 4.8,
-            "favorites_count": 1200
-        },
-        {
-            "title": "Space Exploration",
-            "image_url": "https://picsum.photos/seed/picsum/400/500",
-            "is_open": "N",
-            "has_event": "Y",
-            "rating": 4.3,
-            "favorites_count": 850
-        },
-        {
-            "title": "Pirate's Treasure",
-            "image_url": "https://picsum.photos/id/237/400/500",
-            "is_open": "Y",
-            "has_event": "Y",
-            "rating": 4.6,
-            "favorites_count": 1025
-        }
-    ]);
-
+    //서버정보 호출
     useEffect(() => {
-        recentClimInfo();
+        climInfo();
     }, []);
+
+    //카테고리 변경 시 필터링 
+    useEffect(() => {
+        if (communityCategory == "0") {
+            setCommunityListFilter(communityList);
+        }
+        else {
+            const filtered = communityList.filter(
+                item => item.communityCategory == communityCategory
+            );
+            setCommunityListFilter(filtered);
+        }
+    },[communityCategory, setCommunityCategory])
 
     return (
         <div>
             <Header></Header>
 
             <section className='Container'>
-                <div className="input-group homInput" onClick={()=> {navigation.pageOpen('/HOM_1010')}}>
+                <div className="input-group homInput" onClick={() => { navigation.pageOpen('/HOM_1010') }}>
                     <span className="input-group-text" id="basic-addon1">
                         <img src={require('../../assets/img/search.svg').default}></img>
                     </span>
@@ -75,12 +77,12 @@ function HOM1000() {
                 </div>
 
                 <div className='mt-4'>
-                    <h3>최근 본 클라이밍장</h3>
+                    <h3 className='cardTitle'>최근 본 클라이밍장</h3>
                     <Row xs={0} md={3} className="g-4 cardGroup">
                         {recentGymList.map((card, idx) => (
                             <Col key={idx}>
-                                <Card onClick={() => { navigation.pageOpen('/SRC_1100') }}>
-                                    <Card.Img variant="top" src={card.image_url} />
+                                <Card style={{ height: '650px' }} onClick={() => { navigation.pageOpen('/SRC_1100') }}>
+                                    <Card.Img variant="top" src={card.imgUrl} className='cardImg' />
                                     <Card.Body>
                                         <Card.Title>{card.gymName}</Card.Title>
                                         <Card.Text className='mt-3'>
@@ -91,7 +93,7 @@ function HOM1000() {
                                             <img src={require('../../assets/img/star.svg').default}></img>
                                             <span className='cardGrade'>
                                                 <strong>{card.rating}</strong>
-                                                <span> ({card.favorites_count})</span>
+                                                <span> ({card.ratingTotalCnt})</span>
                                             </span>
                                         </Card.Text>
                                     </Card.Body>
@@ -105,98 +107,64 @@ function HOM1000() {
                 <div className='climing-list'>
                     <div className='clim-open'>
                         <h3>새로 오픈했어요!</h3>
-                        <div className="card mb-3">
-                            <div className="row g-0">
-                                <div className="col-md-4" onClick={()=> {recentClimInfo()}}>
-                                    <img src={require('../../assets/img/recentcliming.jpg')} className="img-fluid rounded-start clim-img" alt="..." />
-                                </div>
-                                <div className="col-md-8">
-                                    <div className="card-body">
-                                        <h5 className="card-title">더클라임 클라이밍 짐앤샵 양재점</h5>
-                                        <p className="card-text">This is a wider card with supportr.</p>
-                                        <p className="card-text">
-                                            <small className="text-body-secondary">
-                                                <img src={require('../../assets/img/star.svg').default}></img>
-                                                <span className='cardGrade'>
-                                                    <strong>4.5</strong>
-                                                    <span>(1,071)</span>
-                                                </span>
-                                            </small>
-                                        </p>
+
+                        {
+                            newOpenGymList.map((item, idx) => (
+                                <div className="card mb-3" key={idx} onClick={()=>{navigation.pageOpen("/SRC_1100")}}>
+                                    <div className="row g-0">
+                                        <div className="col-md-4">
+                                            <img src={item.imgUrl} className="img-fluid rounded-start clim-img" alt="..." />
+                                        </div>
+                                        <div className="col-md-8">
+                                            <div className="card-body">
+                                                <h5 className="card-title">{item.gymName}</h5>
+                                                <p className="card-text">{item.content}</p>
+                                                <p className="card-text">
+                                                    <small className="text-body-secondary">
+                                                        <img src={require('../../assets/img/star.svg').default} alt="star" />
+                                                        <span className='cardGrade'>
+                                                            <strong>{item.rating}</strong>
+                                                            <span> ({item.ratingTotalCnt} )</span>
+                                                        </span>
+                                                    </small>
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div className="card mb-3" >
-                            <div className="row g-0">
-                                <div className="col-md-4">
-                                    <img src={require('../../assets/img/recentcliming.jpg')} className="img-fluid rounded-start clim-img" alt="..." />
-                                </div>
-                                <div className="col-md-8">
-                                    <div className="card-body">
-                                        <h5 className="card-title">더클라임 클라이밍 짐앤샵 양재점</h5>
-                                        <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                        <p className="card-text">
-                                            <small className="text-body-secondary">
-                                                <img src={require('../../assets/img/star.svg').default}></img>
-                                                <span className='cardGrade'>
-                                                    <strong>4.5</strong>
-                                                    <span>(1,071)</span>
-                                                </span>
-                                            </small>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            ))
+                        }
                     </div>
 
                     <div className='clim-closest'>
                         <h3>내 주변 클라이밍장</h3>
-                        <div className="card mb-3">
-                            <div className="row g-0">
-                                <div className="col-md-4">
-                                    <img src={require('../../assets/img/recentcliming.jpg')} className="img-fluid rounded-start clim-img" alt="..." />
-                                </div>
-                                <div className="col-md-8">
-                                    <div className="card-body">
-                                        <h5 className="card-title">더클라임 클라이밍 짐앤샵 양재점</h5>
-                                        <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                        <p className="card-text">
-                                            <small className="text-body-secondary">
-                                                <img src={require('../../assets/img/star.svg').default}></img>
-                                                <span className='cardGrade'>
-                                                    <strong>4.5</strong>
-                                                    <span>(1,071)</span>
-                                                </span>
-                                            </small>
-                                        </p>
+
+                        {
+                            locationGymList.map((item, idx) => (
+                                <div className="card mb-3" key={idx} onClick={()=>{navigation.pageOpen("/SRC_1100")}}>
+                                    <div className="row g-0">
+                                        <div className="col-md-4">
+                                            <img src={item.imgUrl} className="img-fluid rounded-start clim-img" alt="..." />
+                                        </div>
+                                        <div className="col-md-8">
+                                            <div className="card-body">
+                                                <h5 className="card-title">{item.gymName}</h5>
+                                                <p className="card-text">{item.content}</p>
+                                                <p className="card-text">
+                                                    <small className="text-body-secondary">
+                                                        <img src={require('../../assets/img/star.svg').default}></img>
+                                                        <span className='cardGrade'>
+                                                            <strong>{item.rating}</strong>
+                                                            <span> ({item.ratingTotalCnt} )</span>
+                                                        </span>
+                                                    </small>
+                                                </p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div className="card mb-3" >
-                            <div className="row g-0">
-                                <div className="col-md-4">
-                                    <img src={require('../../assets/img/recentcliming.jpg')} className="img-fluid rounded-start clim-img" alt="..." />
-                                </div>
-                                <div className="col-md-8">
-                                    <div className="card-body">
-                                        <h5 className="card-title">더클라임 클라이밍 짐앤샵 양재점</h5>
-                                        <p className="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                        <p className="card-text">
-                                            <small className="text-body-secondary">
-                                                <img src={require('../../assets/img/star.svg').default}></img>
-                                                <span className='cardGrade'>
-                                                    <strong>4.5</strong>
-                                                    <span>(1,071)</span>
-                                                </span>
-                                            </small>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                            ))
+                        }
                     </div>
                 </div>
 
@@ -206,22 +174,27 @@ function HOM1000() {
 
                         <ul className="nav nav-tabs">
                             <li className="nav-item" role="presentation">
-                                <button className="nav-link active" type="button">전체</button>
+                                <button className={`nav-link ${communityCategory == "0" ? "active" : ""}`} onClick={() => { categoryChange("0") }}>전체</button>
                             </li>
                             <li className="nav-item" role="presentation">
-                                <button className="nav-link" type="button">자유 게시판</button>
+                                <button className={`nav-link ${communityCategory == "1" ? "active" : ""}`} onClick={() => { categoryChange("1") }}>자유게시판</button>
                             </li>
                             <li className="nav-item" role="presentation">
-                            <button className="nav-link" type="button">파티 모집</button>
+                                <button className={`nav-link ${communityCategory == "2" ? "active" : ""}`} onClick={() => { categoryChange("2") }}>파티게시판</button>
                             </li>
                         </ul>
 
-                        <ul className="list-group list-group-flush">
-                            <li className="list-group-item d-flex justify-content-between align-items-center">
-                                <span>첫 번째 글</span>
-                                <span className='clim-comuDt'>2024.06.23</span>
-                            </li>
-                            <div className='nodata' style={{display: 'none'}}>게시물이 없습니다</div>
+                        <ul className="list-group list-group-flush hom-list">
+                            {
+                                communityListFilter.map((item, idx) => (
+                                    <li className="list-group-item d-flex justify-content-between align-items-center" key={idx}>
+                                        <span>{item.title}</span>
+                                        <span className='clim-comuDt'>{item.createDate.formattedDate("YYYY-MM-DD")}</span>
+                                    </li>
+                                ))
+                            }
+
+                            <div className='nodata' style={{ display: 'none' }}>게시물이 없습니다</div>
                         </ul>
                     </div>
                     <div className='clim-info'>
