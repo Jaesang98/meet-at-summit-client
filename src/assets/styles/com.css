@@ -53,25 +53,27 @@
     align-items: center;
 }
 
-.checkbox {
-    display: none;
-}
-
 .hom-tab-label {
     cursor: pointer;
     white-space: nowrap;
     padding: 5px 20px;
     border-radius: 30px;
     border: 1px solid #d8d5f2;
-    /* transition: background 0.3s, color 0.3s, border-color 0.3s; */
+    display: inline-block;
+    transition: all 0.3s ease;
+    /* 부드러운 전환 효과 추가 */
 }
 
 .hom-tab-label:hover {
     background: #efedfb;
 }
 
+.checkbox {
+    display: none;
+}
+
 /* 체크박스와 레이블을 연동하여 클릭 시 스타일 변경 */
-.checkbox:checked + .hom-tab-label {
+.checkbox:checked+.hom-tab-label {
     color: #fff;
     background: #5200DF;
     border-color: transparent;
@@ -195,6 +197,8 @@
     /* 호버 시 배경 색상 */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     /* 호버 시 그림자 효과 */
+
+    cursor: pointer;
 }
 
 /* 왼쪽 콘텐츠 스타일 */
@@ -942,4 +946,28 @@
     color: #E6E6E6;
     cursor: not-allowed;
     opacity: 0.7;
+}
+
+/* 페이징 */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}
+
+.pagination a {
+    color: black;
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.pagination a.active {
+    background-color: #3b00a4;
+    color: white;
+}
+
+.pagination a:hover:not(.active) {
+    background-color: #ddd;
 }

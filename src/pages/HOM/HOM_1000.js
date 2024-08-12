@@ -199,7 +199,8 @@ function HOM1000() {
                     </div>
                     <div className='clim-info'>
                         <h4>클라이밍장 정보</h4>
-                        <img src={require('../../assets/img/recentcliming.jpg')} alt="클라이밍 정보" className="img-fluid"></img>
+                        <img src="https://search.pstatic.net/common/?src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNDAxMjVfMjk3%2FMDAxNzA2MTE0NTU4MjA4.9Dzsia52FCyhFrVVZ5_yLSjapvV49PIu8Q7v1u_741kg.a5ICI6jMP-QL9miGyTUGjF4qhts13ZetfycsSd-QbPsg.JPEG%2F20240115_152119.jpg.jpg%3Ftype%3Dw1500_60_sharpen" 
+                        alt="클라이밍 정보" className="img-fluid"></img>
                     </div>
                 </div>
             </section>
