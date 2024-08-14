@@ -830,6 +830,7 @@
     border: none;
     background-color: white;
     cursor: pointer;
+    width: 50px;
 }
 
 .contentsicon {
@@ -970,4 +971,10 @@
 
 .pagination a:hover:not(.active) {
     background-color: #ddd;
+}
+
+.detail-category {
+    font-size: 20px;
+    font-weight: 700;
+    color: #5200DF;
 }

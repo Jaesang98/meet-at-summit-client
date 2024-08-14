@@ -20,7 +20,7 @@ function COM1000() {
     const [communityCategory, setCommunityCategory] = useState("1");    // 탭 구분값
     const [detailCategoryList, setDetailCategoryList] = useState([]);   // 카테고리 리스트
     const [detailCategory, setDetailCategory] = useState("ALL");        // 카테고리 키값
-    const [offset, setOffset] = useState(0);                            // 페이지 번호 (0-based index)
+    const [offset, setOffset] = useState(0);                            // 페이지 번호
     const [totalPage, setTotalPage] = useState(0);                      // 페이지 총 개수
     const [limit, setLimit] = useState(10);                             // 한 페이지 최대 목록 수
     const [pages, setPages] = useState([]);                             // 페이지 버튼 배열
@@ -89,6 +89,31 @@ function COM1000() {
         setDetailCategory(detailCategory);
     }
 
+    // 카테고리 가져오기
+    const communityCategoryList = async () => {
+        try {
+            await requestApi.NetWork({
+                getYn: false,
+                method: "get",
+                url: "http://192.168.5.220:9091/api/climbing/community/detailcategory/",
+                params: {
+                    communityCategory: communityCategory,
+                },
+                callback(res) {
+                    // 카테고리에 전체 추가
+                    const detailCategoryListUpdate = res.data.detailCategoryList.slice();
+                    detailCategoryListUpdate.unshift({
+                        "detailCategory": "ALL",
+                        "detailNm": "전체"
+                    });
+                    setDetailCategoryList(detailCategoryListUpdate);
+                }
+            });
+        } catch (err) {
+            console.error('Error during API request:', err);
+        }
+    };
+
     // 게시글 정보 가져오기
     const communityInfo = async () => {
         try {
@@ -105,21 +130,16 @@ function COM1000() {
                     limit: limit,
                 },
                 callback(res) {
+                    //원본, 자유게시판, 파티모집
                     setOriginCommuList(res.data.communityList);
                     setCommunityList(res.data.communityList.filter(item => item.communityCategory === "1"));
                     setPartyList(res.data.communityList.filter(item => item.communityCategory === "2"));
-                    const totalCnt = Number(res.data.totalCnt);
-                    const totalPages = Math.ceil(totalCnt / limit);
+
+                    //페이지 번호 
+                    const totalCnt = Number(res.data.totalCnt);         //리스트 총 개수
+                    const totalPages = Math.ceil(totalCnt / limit);     //페이지 개수
                     setTotalPage(totalPages);
                     setPages(Array.from({ length: totalPages }, (_, idx) => idx));
-
-                    // 카테고리에 전체 추가
-                    const detailCategoryListUpdate = res.data.detailCategoryList.slice();
-                    detailCategoryListUpdate.unshift({
-                        "detailCategory": "ALL",
-                        "detailNm": "전체"
-                    });
-                    setDetailCategoryList(detailCategoryListUpdate);
                 }
             });
         } catch (err) {
@@ -131,6 +151,11 @@ function COM1000() {
     useEffect(() => {
         communityInfo();
     }, [communityCategory, detailCategory, offset]);
+
+    //카테고리 호출
+    useEffect(() => {
+        communityCategoryList();
+    }, [communityCategory]);
 
     // 페이지 범위 업데이트
     useEffect(() => {
@@ -177,7 +202,11 @@ function COM1000() {
                             ))
                         }
                     </ul>
-                    <button className='com-button' onClick={() => { navigation.pageOpen('/COM_1300') }}>새 글 등록</button>
+                    {
+                        communityCategory == "1" ?
+                            <button className='com-button' onClick={() => { navigation.pageOpen('/COM_1300') }}>새 글 등록</button> :
+                            <button className='com-button' onClick={() => { navigation.pageOpen('/COM_1400') }}>파티 모집</button>
+                    }
                 </div>
 
                 <ul className="list-group list-group-flush">
@@ -185,7 +214,8 @@ function COM1000() {
                     {
                         communityCategory === "1" && communityList.length > 0 ?
                             communityList.map((item, idx) => (
-                                <li className="list-group-item d-flex justify-content-between align-items-center" key={idx} onClick={() => { navigation.pageOpen('/COM_1100') }}>
+                                <li className="list-group-item d-flex justify-content-between align-items-center" key={idx}
+                                    onClick={() => { navigation.pageOpen('/COM_1100', { postId: item.postId }) }}>
                                     <div className="list-item-left">
                                         <span className="list-item-category">[{item.detailNm}]</span>
                                         <span className="list-item-title">{item.title}</span>
@@ -206,9 +236,10 @@ function COM1000() {
                     {
                         communityCategory === "2" && partyList.length > 0 ?
                             partyList.map((item, idx) => (
-                                <li className="list-group-item d-flex justify-content-between align-items-center" key={idx} onClick={() => { navigation.pageOpen('/COM_1200') }}>
+                                <li className="list-group-item d-flex justify-content-between align-items-center" key={idx}
+                                    onClick={() => { navigation.pageOpen('/COM_1200', { postId: item.postId }) }}>
                                     <div className="list-item-left">
-                                        <span className="list-item-recruiting">[{item.detailNm}]</span>
+                                        <span className={item.detailCategory == "1" ? "list-item-recruiting" : "list-item-completed"}>[{item.detailNm}]</span>
                                         <span className="list-item-title">{item.title}</span>
                                     </div>
                                     <div className="list-item-right">

@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation  } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -28,6 +28,12 @@ export function useNavigation() {
             navigate('/');
         },
     };
+}
+
+// 파라미터 추출 유틸리티 함수
+export function useLocationParams() {
+    const location = useLocation();
+    return location.state || {};
 }
 
 // 서버통신
