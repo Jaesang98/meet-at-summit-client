@@ -204,8 +204,8 @@ function COM1000() {
                     </ul>
                     {
                         communityCategory == "1" ?
-                            <button className='com-button' onClick={() => { navigation.pageOpen('/COM_1300') }}>새 글 등록</button> :
-                            <button className='com-button' onClick={() => { navigation.pageOpen('/COM_1400') }}>파티 모집</button>
+                            <button className='com-button' onClick={() => { navigation.pageOpen('/COM_1200') }}>새 글 등록</button> :
+                            <button className='com-button' onClick={() => { navigation.pageOpen('/COM_1300') }}>파티 모집</button>
                     }
                 </div>
 
@@ -237,7 +237,7 @@ function COM1000() {
                         communityCategory === "2" && partyList.length > 0 ?
                             partyList.map((item, idx) => (
                                 <li className="list-group-item d-flex justify-content-between align-items-center" key={idx}
-                                    onClick={() => { navigation.pageOpen('/COM_1200', { postId: item.postId }) }}>
+                                    onClick={() => { navigation.pageOpen('/COM_2100', { postId: item.postId }) }}>
                                     <div className="list-item-left">
                                         <span className={item.detailCategory == "1" ? "list-item-recruiting" : "list-item-completed"}>[{item.detailNm}]</span>
                                         <span className="list-item-title">{item.title}</span>

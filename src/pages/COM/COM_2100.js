@@ -6,7 +6,7 @@ import '../../assets/styles/com.css'
 import * as util from '../../util';
 import { useState, useEffect } from 'react';
 
-function COM1100() {
+function COM2100() {
     const navigation = util.useNavigation();
     const requestApi = util.useApi();
     const [showDetailPopover, setShowDetailPopover] = useState(false);  // 게시글 팝오버 상태
@@ -185,7 +185,7 @@ function COM1100() {
                                 <Popover id="popover-basic">
                                     <Popover.Body>
                                         <Button variant="" className="w-100 mb-2" onClick={() => {
-                                            navigation.pageOpen("/COM_1200", {communityList : communityList})
+                                            navigation.pageOpen("/COM_1300", { communityList: communityList })
                                             setShowDetailPopover(false);
                                         }}>글수정</Button>
 
@@ -200,8 +200,38 @@ function COM1100() {
                     </div>
 
                     <div className="detail-meta">
-                        <span className="detail-date">{communityList.createDate}</span>
+                    <span className="detail-date">{communityList.createDate}</span>
                         <span className="detail-author ms-3">작성자: {communityList.author}</span>
+                    </div>
+
+                    <div className='border-full partyinfo'>
+                        <div className="partyinfo-header">
+                            <div className="party-info-title">
+                                <span className="info-label">일시 :</span>
+                                <span className="info-content">2024.06.28.13:00</span>
+                            </div>
+                            <div className="party-info-right">
+                                <span className="party-info-participants">
+                                    <span className="info-label">참여 :</span>
+                                    <span className="party-number">52</span>
+                                </span>
+                                <Button variant="light" className="btn-member-list">
+                                    멤버 목록
+                                </Button>
+                            </div>
+                        </div>
+
+                        <div className="party-info-row">
+                            <span><span className="info-label">장소:</span> <span className="info-content">하남 스타필드 클라이밍장</span></span>
+                        </div>
+
+                        <div className="party-info-row">
+                            <span><span className="info-label">참여비:</span> <span className="info-content">10,000원</span></span>
+                            {/* 비활성화 disabled추가 */}
+                            <Button variant="" className="btn-participate">
+                                파티 참여하기
+                            </Button>
+                        </div>
                     </div>
 
                     <div className='detail-contents'>
@@ -233,7 +263,7 @@ function COM1100() {
                 <div className="detail-comments-header">
                     <div className={`icon-text2 ${isFavorite ? 'favorite' : 'not-favorite'}`} onClick={toggleFavorite}>123</div>
                     <div className="icon-text comment-count">댓글
-                        <span>{communityList.commentCnt}</span>
+                        <span>45</span>
                     </div>
                 </div>
 
@@ -297,7 +327,7 @@ function COM1100() {
                                             :
                                             <div>
                                                 <textarea id="" className="form-textarea mt-3" placeholder="내용을 입력하세요" defaultValue={item.comment}
-                                                onChange={(e) => {setComment(e.target.value)}}></textarea>
+                                                    onChange={(e) => { setComment(e.target.value) }}></textarea>
                                                 <button className="com-button mt-3" onClick={() => { commentsEdit(item.commentId) }}>수정</button>
                                             </div>
                                     }
@@ -313,4 +343,4 @@ function COM1100() {
     );
 }
 
-export default COM1100;
+export default COM2100;
