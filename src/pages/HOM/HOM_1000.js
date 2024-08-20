@@ -16,6 +16,7 @@ function HOM1000() {
     const [communityList, setCommunityList] = useState([]);             //커뮤니티 원본
     const [communityListFilter, setCommunityListFilter] = useState([]); //커뮤니티 필터링
     const [communityCategory, setCommunityCategory] = useState("0");    //커뮤니티 구분 =>  0:전체 1:자유 2:파티
+    const [mainImage, setMainImage] = useState("");                     //클라이밍장 정보 이미지
 
     //카테고리 구분
     const categoryChange = (category => {
@@ -28,7 +29,7 @@ function HOM1000() {
             await requestApi.NetWork({
                 getYn: false,
                 method: "get",
-                url: "http://192.168.5.220:9091/api/climbing/main/",
+                url: "/api/climbing/main/",
                 params: {
                     userId: '4'
                 },
@@ -38,6 +39,7 @@ function HOM1000() {
                     setLocationGymList(res.data.locationGymList);
                     setCommunityList(res.data.communityList);
                     setCommunityListFilter(res.data.communityList);
+                    setMainImage(res.data.mainImage);
 
                 }
             });
@@ -199,7 +201,7 @@ function HOM1000() {
                     </div>
                     <div className='clim-info'>
                         <h4>클라이밍장 정보</h4>
-                        <img src="https://search.pstatic.net/common/?src=https%3A%2F%2Fpup-review-phinf.pstatic.net%2FMjAyNDAxMjVfMjk3%2FMDAxNzA2MTE0NTU4MjA4.9Dzsia52FCyhFrVVZ5_yLSjapvV49PIu8Q7v1u_741kg.a5ICI6jMP-QL9miGyTUGjF4qhts13ZetfycsSd-QbPsg.JPEG%2F20240115_152119.jpg.jpg%3Ftype%3Dw1500_60_sharpen" 
+                        <img src={mainImage}
                         alt="클라이밍 정보" className="img-fluid"></img>
                     </div>
                 </div>

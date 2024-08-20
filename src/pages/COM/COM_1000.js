@@ -95,7 +95,7 @@ function COM1000() {
             await requestApi.NetWork({
                 getYn: false,
                 method: "get",
-                url: "http://192.168.5.220:9091/api/climbing/community/detailcategory/",
+                url: "/api/climbing/community/detailcategory/",
                 params: {
                     communityCategory: communityCategory,
                 },
@@ -120,7 +120,7 @@ function COM1000() {
             await requestApi.NetWork({
                 getYn: false,
                 method: "get",
-                url: "http://192.168.5.220:9091/api/climbing/community/",
+                url: "/api/climbing/community/",
                 params: {
                     searchCondition: searchCondition,
                     searchValue: searchValue,
@@ -205,7 +205,7 @@ function COM1000() {
                     {
                         communityCategory == "1" ?
                             <button className='com-button' onClick={() => { navigation.pageOpen('/COM_1200') }}>새 글 등록</button> :
-                            <button className='com-button' onClick={() => { navigation.pageOpen('/COM_1300') }}>파티 모집</button>
+                            <button className='com-button' onClick={() => { navigation.pageOpen('/COM_2200') }}>파티 모집</button>
                     }
                 </div>
 

@@ -5,7 +5,7 @@ import '../../assets/styles/com.css'
 import * as util from '../../util';
 import { useState, useEffect } from 'react';
 
-function COM1200() {
+function COM2200() {
     const navigation = util.useNavigation();
     const requestApi = util.useApi();
 
@@ -14,7 +14,7 @@ function COM1200() {
     const [selCategory, setSelCategory] = useState();
     const [selTitle, setSelTitle] = useState();
     const [selContent, setSelContent] = useState();
-  
+
     // 카테고리 가져오기
     const communityCategoryList = async () => {
         try {
@@ -23,7 +23,7 @@ function COM1200() {
                 method: "get",
                 url: "/api/climbing/community/detailcategory/",
                 params: {
-                    communityCategory: 1,
+                    communityCategory: 2,
                 },
                 callback(res) {
                     setDetailCategoryList(res.data.detailCategoryList);
@@ -48,7 +48,7 @@ function COM1200() {
             await requestApi.NetWork({
                 getYn: false,
                 method: "POST",
-                url: "/api/climbing/community/post/",
+                url: "/api/climbing/community/partypost/",
                 params: {
                     detailCategory: selCategory,
                     title: selTitle,
@@ -73,7 +73,7 @@ function COM1200() {
             await requestApi.NetWork({
                 getYn: false,
                 method: "PUT",
-                url: "/api/climbing/community/post/",
+                url: "/api/climbing/community/partypost/",
                 params: {
                     detailCategory: selCategory,
                     title: selTitle,
@@ -101,8 +101,6 @@ function COM1200() {
             setSelContent(communityList.content);
         }
     }, []);
-
-
     return (
         <div>
             <Header></Header>
@@ -110,7 +108,7 @@ function COM1200() {
             <section className='Container'>
                 <div className='com-head'>
                     <div>
-                        <h3>새 글 등록</h3>
+                        <h3>파티 모집</h3>
                         <div className='com-path'>
                         커뮤니티 > 자유 게시판 > 새글등록
                         </div>
@@ -130,7 +128,7 @@ function COM1200() {
 
                 <div className='com-write'>
                     <div className='form-group'>
-                        <label htmlFor='category' className='form-label'>카테고리</label>
+                        <label htmlFor='category' className='form-label'>모집 상태</label>
                         <select id='category' className='form-select' value={selCategory} onChange={(e) => { setSelCategory(e.target.value) }}>
                             {
                                 detailCategoryList.map((item, idx) => (
@@ -153,6 +151,54 @@ function COM1200() {
                         }
                     </div>
 
+                    <div className='form-group form-group-border'>
+                        <div className='info-header'>
+                            <span className='info-title'>파티 정보</span>
+                        </div>
+
+                        <div className='info-section'>
+                            <label htmlFor='party-date' className='form-label'>
+                                파티일시
+                            </label>
+                            <div className='info-date'>
+                                <div>
+                                    <input type='date' id='' className='form-input date-input' />
+                                    <input type='date' id='' className='form-input date-input' />
+                                    <label htmlFor='end-date-check' className='end-date-label'>
+                                        <input type='checkbox' id='end-date-check' className='form-checkbox' />
+                                        종료일
+                                    </label>
+                                </div>
+
+                                <div className='mt-2'>
+                                    <input type='time' id='' className='form-input date-input' />
+                                    <input type='time' id='' className='form-input date-input' />
+                                    <label htmlFor='end-date-check' className='end-date-label'>
+                                        <input type='checkbox' id='end-date-check' className='form-checkbox' />
+                                        종료시간
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className='info-section'>
+                            <label htmlFor='venue' className='form-label'>
+                                장소
+                            </label>
+                            <input type='text' id='venue' className='form-input' placeholder='장소를 입력하세요' />
+                        </div>
+
+                        <div className='info-section'>
+                            <label htmlFor='entry-fee' className='form-label'>
+                                참가비
+                            </label>
+                            <div className='entry-fee-container'>
+                                <input className='form-input fee-input' placeholder='0' />
+                                <span className='currency-text'>원</span>
+                            </div>
+                        </div>
+                    </div>
+
                     <div className='form-group'>
                         <label htmlFor='content' className='form-label'>내용</label>
                         {
@@ -164,28 +210,6 @@ function COM1200() {
                                     defaultValue={communityList.content}
                                     onChange={(e) => { setSelContent(e.target.value) }}></textarea>
                         }
-                    </div>
-
-                    <div className='form-group'>
-                        <label htmlFor='attachment' className='form-label'>첨부파일</label>
-                        <button className='attach-button'>파일 첨부하기</button>
-                        <div className='attachment-info'>
-                            <span>(3/</span>
-                            <span>10)</span>
-                        </div>
-                        <div className='attachment-note'>
-                            파일당 50MB까지 첨부 가능합니다.
-                        </div>
-                        <div className='attachment-list'>
-                            <span className='com-file'>첨부파일명_첨부1.png</span>
-                            <span className='com-file'>첨부파일명_첨부1.png</span>
-                            <span className='com-file'>첨부파일명_첨부1.png</span>
-                            <span className='com-file'>첨부파일명_첨부1.png</span>
-                            <span className='com-file'>첨부파일명_첨부1.png</span>
-                            <span className='com-file'>첨부파일명_첨부1.png</span>
-                            <span className='com-file'>첨부파일명_첨부1.png</span>
-                            <span className='com-file'>첨부파일명_첨부1.png</span>
-                        </div>
                     </div>
 
                     <div className='form-group'>
@@ -209,4 +233,4 @@ function COM1200() {
     );
 }
 
-export default COM1200;
+export default COM2200;

@@ -13,7 +13,7 @@ import COM_1000 from './pages/COM/COM_1000'; // 커뮤니티
 import COM_1100 from './pages/COM/COM_1100'; // 커뮤니티-자유게시판 (상세)
 import COM_2100 from './pages/COM/COM_2100'; // 커뮤니티-파티모집 (상세)
 import COM_1200 from './pages/COM/COM_1200'; // 커뮤니티-새글등록
-import COM_1300 from './pages/COM/COM_1300'; // 커뮤니티-파티모집
+import COM_2200 from './pages/COM/COM_2200'; // 커뮤니티-파티모집
 import SRC_1000 from './pages/SRC/SRC_1000'; // 클라이밍장 찾기
 import SRC_1100 from './pages/SRC/SRC_1100'; // 클라이밍장 찾기 상세
 import SRC_2000 from './pages/SRC/SRC_2000'; // 클라이밍장 찾기(지도)
@@ -37,7 +37,7 @@ const Router = () => {
       <Route path="/COM_1100" element={<COM_1100 />} />
       <Route path="/COM_2100" element={<COM_2100 />} />
       <Route path="/COM_1200" element={<COM_1200 />} />
-      <Route path="/COM_1300" element={<COM_1300 />} />
+      <Route path="/COM_2200" element={<COM_2200 />} />
       <Route path="/SRC_1000" element={<SRC_1000 />} />
       <Route path="/SRC_1100" element={<SRC_1100 />} />
       <Route path="/SRC_2000" element={<SRC_2000 />} />

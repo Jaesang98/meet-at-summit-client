@@ -43,7 +43,7 @@ function COM1100() {
             await requestApi.NetWork({
                 getYn: false,
                 method: "get",
-                url: "http://192.168.5.220:9091/api/climbing/community/detail/",
+                url: "/api/climbing/community/detail/",
                 params: {
                     postId: postId,
                 },
@@ -70,7 +70,7 @@ function COM1100() {
             await requestApi.NetWork({
                 getYn: false,
                 method: "DELETE",
-                url: "http://192.168.5.220:9091/api/climbing/community/post/",
+                url: "/api/climbing/community/post/",
                 params: {
                     postId: postId
                 },
@@ -92,7 +92,7 @@ function COM1100() {
             await requestApi.NetWork({
                 getYn: false,
                 method: "POST",
-                url: "http://192.168.5.220:9091/api/climbing/community/comment/",
+                url: "/api/climbing/community/comment/",
                 params: {
                     postId: communityList.postId,
                     userId: 1206,
@@ -117,7 +117,7 @@ function COM1100() {
             await requestApi.NetWork({
                 getYn: false,
                 method: "PUT",
-                url: "http://192.168.5.220:9091/api/climbing/community/comment/",
+                url: "/api/climbing/community/comment/",
                 params: {
                     commentId: commentId,
                     comment: comment
@@ -141,7 +141,7 @@ function COM1100() {
             await requestApi.NetWork({
                 getYn: false,
                 method: "DELETE",
-                url: "http://192.168.5.220:9091/api/climbing/community/comment/",
+                url: "/api/climbing/community/comment/",
                 params: {
                     commentId: commentId,
                 },

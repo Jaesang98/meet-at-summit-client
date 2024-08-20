@@ -9,8 +9,8 @@ import { useState, useEffect } from 'react';
 function SRC1000() {
     const navigation = util.useNavigation();
     const requestApi = util.useApi();
-
-    const [gymList, setGymList] = useState([]);
+    const { selectedLine, selStation, climSearchVal } = util.useLocationParams();  //지하철 역 정보
+    const [gymList, setGymList] = useState([]);                     //클라이밍장 리스트
 
     //클라이밍장 검색결과
     const climSearch = async () => {
@@ -18,7 +18,7 @@ function SRC1000() {
             await requestApi.NetWork({
                 getYn: false,
                 method: "get",
-                url: "http://192.168.5.220:9091/api/climbing/search/",
+                url: "/api/climbing/search/",
                 params: {
                     searchValue: "3gym"
                 },

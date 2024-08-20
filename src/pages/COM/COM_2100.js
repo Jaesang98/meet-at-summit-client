@@ -12,6 +12,7 @@ function COM2100() {
     const [showDetailPopover, setShowDetailPopover] = useState(false);  // 게시글 팝오버 상태
     const [showPopover, setShowPopover] = useState({});                 // 댓글별 팝오버 상태
     const [target, setTarget] = useState(null);
+    const [joinYn, setJoinYn] = useState("N");
 
     const detailHandleClick = (event) => {
         setTarget(event.target);
@@ -43,7 +44,7 @@ function COM2100() {
             await requestApi.NetWork({
                 getYn: false,
                 method: "get",
-                url: "http://192.168.5.220:9091/api/climbing/community/detail/",
+                url: "/api/climbing/community/detail/",
                 params: {
                     postId: postId,
                 },
@@ -70,7 +71,7 @@ function COM2100() {
             await requestApi.NetWork({
                 getYn: false,
                 method: "DELETE",
-                url: "http://192.168.5.220:9091/api/climbing/community/post/",
+                url: "/api/climbing/community/partypost/",
                 params: {
                     postId: postId
                 },
@@ -92,7 +93,7 @@ function COM2100() {
             await requestApi.NetWork({
                 getYn: false,
                 method: "POST",
-                url: "http://192.168.5.220:9091/api/climbing/community/comment/",
+                url: "/api/climbing/community/comment/",
                 params: {
                     postId: communityList.postId,
                     userId: 1206,
@@ -117,7 +118,7 @@ function COM2100() {
             await requestApi.NetWork({
                 getYn: false,
                 method: "PUT",
-                url: "http://192.168.5.220:9091/api/climbing/community/comment/",
+                url: "/api/climbing/community/comment/",
                 params: {
                     commentId: commentId,
                     comment: comment
@@ -141,7 +142,7 @@ function COM2100() {
             await requestApi.NetWork({
                 getYn: false,
                 method: "DELETE",
-                url: "http://192.168.5.220:9091/api/climbing/community/comment/",
+                url: "/api/climbing/community/comment/",
                 params: {
                     commentId: commentId,
                 },
@@ -150,6 +151,33 @@ function COM2100() {
                     if (res.code == 200) {
                         alert("잘~ 삭제되었씁니다");
                         communityDetail();
+                    }
+                }
+            });
+        } catch (err) {
+            console.error('Error during API request:', err);
+        }
+    };
+
+    const partyJoin = async () => {
+        if(joinYn == "Y"){
+            setJoinYn("N")
+        }
+
+        try {
+            await requestApi.NetWork({
+                getYn: false,
+                method: "POST",
+                url: "/api/climbing/community/partyjoin/",
+                params: {
+                    postId: postId,
+                    userId: 1206,
+                    joinYn: joinYn
+                },
+                callback(res) {
+                    if (res.code == 200) {
+                        alert("게시글 삭제됨 ㅋㅋㅅㄱ");
+                        navigation.pageClose();
                     }
                 }
             });
@@ -185,7 +213,7 @@ function COM2100() {
                                 <Popover id="popover-basic">
                                     <Popover.Body>
                                         <Button variant="" className="w-100 mb-2" onClick={() => {
-                                            navigation.pageOpen("/COM_1300", { communityList: communityList })
+                                            navigation.pageOpen("/COM_2200", { communityList: communityList })
                                             setShowDetailPopover(false);
                                         }}>글수정</Button>
 
@@ -200,7 +228,7 @@ function COM2100() {
                     </div>
 
                     <div className="detail-meta">
-                    <span className="detail-date">{communityList.createDate}</span>
+                        <span className="detail-date">{communityList.createDate}</span>
                         <span className="detail-author ms-3">작성자: {communityList.author}</span>
                     </div>
 
@@ -228,9 +256,11 @@ function COM2100() {
                         <div className="party-info-row">
                             <span><span className="info-label">참여비:</span> <span className="info-content">10,000원</span></span>
                             {/* 비활성화 disabled추가 */}
-                            <Button variant="" className="btn-participate">
-                                파티 참여하기
-                            </Button>
+                            {
+                                joinYn == 'N' ? 
+                                <Button variant="" className="btn-participate" onClick={partyJoin}>파티 참여하기</Button> :
+                                <Button variant="" className="btn-participate" onClick={partyJoin}>파티 참여취소</Button>
+                            }
                         </div>
                     </div>
 
