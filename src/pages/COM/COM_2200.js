@@ -3,17 +3,55 @@ import Footer from '../../components/footer';
 import '../../assets/styles/style.css'
 import '../../assets/styles/com.css'
 import * as util from '../../util';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 function COM2200() {
     const navigation = util.useNavigation();
     const requestApi = util.useApi();
 
-    const [detailCategoryList, setDetailCategoryList] = useState([]);   // 카테고리 리스트
     const { communityList } = util.useLocationParams();                 // 상세 게시글
-    const [selCategory, setSelCategory] = useState();
-    const [selTitle, setSelTitle] = useState();
-    const [selContent, setSelContent] = useState();
+    const [detailCategoryList, setDetailCategoryList] = useState([]);   // 카테고리 리스트
+    const [detailFormat, setDetailFormat] = useState({})                // 수정 및 작성한 상세 게시글
+    const fileInputRef = useRef(null);                                  //인풋 요소
+    const [selImage, setSelImage] = useState([]);                       //이미지 파일
+
+    // 상세 수정
+    const detailChange = (event, field) => {
+        let newValue = event.target.value;
+        if (field == "selEntryFee") {
+            newValue = newValue.replace(/[^0-9]/g, '');     //처음에 ,문자를 제거
+            newValue = util.addComma(newValue);             //컴마추가
+        }
+
+        setDetailFormat(prev => ({
+            ...prev,
+            [field]: newValue
+        }));
+    };
+
+    // 이미지 업로드
+    const ImageUpload = (e) => {
+        if (selImage.length == 3) {
+            alert("이미지 그만 담으셈")
+        }
+        else {
+            let file = e.target.files[0];
+
+            // 파일 정보 출력
+            // console.log('파일 이름:', file.name);
+            // console.log('파일 크기:', file.size, 'bytes');
+            // console.log('파일 타입:', file.type);
+
+            // 파일 미리보기 URL 생성 (선택적)
+            const previewURL = URL.createObjectURL(file);
+            let selImageCp = [...selImage];
+            selImageCp.push({
+                'postImgUrl': previewURL
+            });
+
+            setSelImage(selImageCp);
+        }
+    }
 
     // 카테고리 가져오기
     const communityCategoryList = async () => {
@@ -39,7 +77,6 @@ function COM2200() {
     const communityDetailCancel = () => {
         alert("작성취소 comfirm은 곧 만들어짐 일단 취소누른순간 초기화 ㅋㅋ ㅅㄱ");
         navigation.pageClose();
-
     }
 
     //작성
@@ -50,10 +87,17 @@ function COM2200() {
                 method: "POST",
                 url: "/api/climbing/community/partypost/",
                 params: {
-                    detailCategory: selCategory,
-                    title: selTitle,
-                    content: selContent,
-                    userId: 1206,
+                    detailCategory: detailFormat.selCategory,                   //카테고리
+                    title: detailFormat.selTitle,                               //타이틀
+                    content: detailFormat.selContent,                           //내용
+                    userId: "1206",                                             //아이디
+                    partyStartDate: detailFormat.selStartDay,                   //시작일자
+                    partyStartTime: detailFormat.selStartTime,                  //시작시간
+                    partyEndDate: detailFormat.selEndDay,                       //종료일자
+                    partyEndTime: detailFormat.selEndTime,                      //종료시간
+                    partyLocation: detailFormat.selLocation,                    //위치
+                    partyEntryFee: util.removeComma(detailFormat.selEntryFee),  //가격
+                    postImgUrl  : selImage                                      //업로드 이미지
                 },
                 callback(res) {
                     if (res.code == 200) {
@@ -75,10 +119,17 @@ function COM2200() {
                 method: "PUT",
                 url: "/api/climbing/community/partypost/",
                 params: {
-                    detailCategory: selCategory,
-                    title: selTitle,
-                    content: selContent,
-                    postId: communityList.postId,
+                    detailCategory: detailFormat.selCategory,                   //카테고리
+                    title: detailFormat.selTitle,                               //타이틀
+                    content: detailFormat.selContent,                           //내용
+                    postId: communityList.postId,                               //게시물 아이디
+                    partyStartDate: detailFormat.selStartDay,                   //시작일자
+                    partyStartTime: detailFormat.selStartTime,                  //시작시간
+                    partyEndDate: detailFormat.selEndDay,                       //종료일자
+                    partyEndTime: detailFormat.selEndTime,                      //종료시간
+                    partyLocation: detailFormat.selLocation,                    //위치
+                    partyEntryFee: util.removeComma(detailFormat.selEntryFee),  //가격
+                    postImgUrl  : selImage                                      //업로드 이미지
                 },
                 callback(res) {
                     if (res.code == 200) {
@@ -95,11 +146,33 @@ function COM2200() {
     //서버정보 호출 => 카테고리 선택
     useEffect(() => {
         communityCategoryList();
-        if (communityList) {
-            setSelCategory(communityList.detailCategory);
-            setSelTitle(communityList.title);
-            setSelContent(communityList.content);
+        let obj = {
+            selCategory: "1",
+            selTitle: "",
+            selContent: "",
+            selStartDay: "",
+            selStartTime: "",
+            selEndDay: "",
+            selEndTime: "",
+            selLocation: "",
+            selEntryFee: "",
         }
+
+        if (communityList) {
+            obj = {
+                selCategory: communityList.detailCategory,
+                selTitle: communityList.title,
+                selContent: communityList.content,
+                selStartDay: communityList.partyStartDate,
+                selStartTime: communityList.partyStartTime,
+                selEndDay: communityList.partyEndDate,
+                selEndTime: communityList.partyEndTime,
+                selLocation: communityList.partyLocation,
+                selEntryFee: communityList.partyEntryFee,
+            }
+        }
+
+        setDetailFormat(obj);
     }, []);
     return (
         <div>
@@ -110,7 +183,7 @@ function COM2200() {
                     <div>
                         <h3>파티 모집</h3>
                         <div className='com-path'>
-                        커뮤니티 > 자유 게시판 > 새글등록
+                        커뮤니티 > 파티모집 > 새글등록
                         </div>
                     </div>
 
@@ -129,7 +202,7 @@ function COM2200() {
                 <div className='com-write'>
                     <div className='form-group'>
                         <label htmlFor='category' className='form-label'>모집 상태</label>
-                        <select id='category' className='form-select' value={selCategory} onChange={(e) => { setSelCategory(e.target.value) }}>
+                        <select id='category' className='form-select' value={detailFormat.selCategory} onChange={(e) => { detailChange(e, 'selCategory') }}>
                             {
                                 detailCategoryList.map((item, idx) => (
                                     <option value={item.detailCategory} key={idx}>{item.detailNm}</option>
@@ -143,11 +216,11 @@ function COM2200() {
                         {
                             !communityList ?
                                 <input type='text' id='title' className='form-input' placeholder='제목을 입력하세요'
-                                    onChange={(e) => { setSelTitle(e.target.value) }} /> :
+                                    onChange={(e) => { detailChange(e, 'selTitle') }} /> :
 
                                 <input type='text' id='title' className='form-input' placeholder=''
                                     defaultValue={communityList.title}
-                                    onChange={(e) => { setSelTitle(e.target.value) }} />
+                                    onChange={(e) => { detailChange(e, 'selTitle') }} />
                         }
                     </div>
 
@@ -162,8 +235,22 @@ function COM2200() {
                             </label>
                             <div className='info-date'>
                                 <div>
-                                    <input type='date' id='' className='form-input date-input' />
-                                    <input type='date' id='' className='form-input date-input' />
+                                    {
+                                        !communityList ?
+                                            <input type='date' id='' className='form-input date-input' onChange={(e) => { detailChange(e, 'selStartDay') }} /> :
+                                            <input type='date' id='' className='form-input date-input'
+                                                defaultValue={communityList.partyStartDate}
+                                                onChange={(e) => { detailChange(e, 'selStartDay') }} />
+
+                                    }
+                                    {
+                                        !communityList ?
+                                            <input type='date' id='' className='form-input date-input' onChange={(e) => { detailChange(e, 'selEndDay') }} /> :
+                                            <input type='date' id='' className='form-input date-input'
+                                                defaultValue={communityList.partyEndDate}
+                                                onChange={(e) => { detailChange(e, 'selEndDay') }} />
+
+                                    }
                                     <label htmlFor='end-date-check' className='end-date-label'>
                                         <input type='checkbox' id='end-date-check' className='form-checkbox' />
                                         종료일
@@ -171,8 +258,22 @@ function COM2200() {
                                 </div>
 
                                 <div className='mt-2'>
-                                    <input type='time' id='' className='form-input date-input' />
-                                    <input type='time' id='' className='form-input date-input' />
+                                    {
+                                        !communityList ?
+                                            <input type='time' id='' className='form-input date-input' onChange={(e) => { detailChange(e, 'selStartTime') }} /> :
+                                            <input type='time' id='' className='form-input date-input'
+                                                defaultValue={communityList.partyStartTime}
+                                                onChange={(e) => { detailChange(e, 'selStartTime') }} />
+                                    }
+
+                                    {
+                                        !communityList ?
+                                            <input type='time' id='' className='form-input date-input' onChange={(e) => { detailChange(e, 'selEndTime') }} /> :
+                                            <input type='time' id='' className='form-input date-input'
+                                                defaultValue={communityList.partyEndTime}
+                                                onChange={(e) => { detailChange(e, 'selEndTime') }} />
+                                    }
+
                                     <label htmlFor='end-date-check' className='end-date-label'>
                                         <input type='checkbox' id='end-date-check' className='form-checkbox' />
                                         종료시간
@@ -185,7 +286,14 @@ function COM2200() {
                             <label htmlFor='venue' className='form-label'>
                                 장소
                             </label>
-                            <input type='text' id='venue' className='form-input' placeholder='장소를 입력하세요' />
+                            {
+                                !communityList ?
+                                    <input type='text' id='venue' className='form-input' placeholder='장소를 입력하세요'
+                                        onChange={(e) => { detailChange(e, 'selLocation') }} /> :
+                                    <input type='text' id='venue' className='form-input'
+                                        onChange={(e) => { detailChange(e, 'selLocation') }}
+                                        defaultValue={communityList.partyLocation} />
+                            }
                         </div>
 
                         <div className='info-section'>
@@ -193,7 +301,16 @@ function COM2200() {
                                 참가비
                             </label>
                             <div className='entry-fee-container'>
-                                <input className='form-input fee-input' placeholder='0' />
+                                {
+                                    !communityList ?
+                                        <input className='form-input fee-input' placeholder='0'
+                                            value={detailFormat.selEntryFee}
+                                            onChange={(e) => { detailChange(e, 'selEntryFee') }} /> :
+                                        <input className='form-input fee-input'
+                                            onChange={(e) => { detailChange(e, 'selEntryFee') }}
+                                            value={detailFormat.selEntryFee}
+                                            defaultValue={communityList.partyEntryFee} />
+                                }
                                 <span className='currency-text'>원</span>
                             </div>
                         </div>
@@ -204,25 +321,40 @@ function COM2200() {
                         {
                             !communityList ?
                                 <textarea id='content' className='form-textarea' placeholder='내용을 입력하세요'
-                                    onChange={(e) => { setSelContent(e.target.value) }}></textarea> :
+                                    onChange={(e) => { detailChange(e, 'selContent') }}></textarea> :
 
                                 <textarea id='content' className='form-textarea' placeholder='내용을 입력하세요'
                                     defaultValue={communityList.content}
-                                    onChange={(e) => { setSelContent(e.target.value) }}></textarea>
+                                    onChange={(e) => { detailChange(e, 'selContent') }}></textarea>
                         }
                     </div>
 
                     <div className='form-group'>
                         <label htmlFor='content' className='form-label'>
-                            이미지 <span className='file-count'>(3/10)</span>
+                            이미지 <span className='file-count'>({selImage.length}/3)</span>
                         </label>
-                        <button className='attach-button'>이미지 첨부하기</button>
+                        <button className='attach-button' onClick={() => { fileInputRef.current.click(); }}>이미지 첨부하기</button>
+                        <input
+                            type='file'
+                            ref={fileInputRef}
+                            onChange={ImageUpload}
+                            accept='image/*'
+                            style={{ display: 'none' }}
+                        />
 
                         <div className='image-container'>
-                            <div className='image-wrapper'>
-                                <img src={require('../../assets/img/recentcliming.jpg')} alt='첨부 이미지' className='uploaded-image' />
-                                <button className='remove-button'></button>
-                            </div>
+                            {
+                                selImage.map((item, idx) => (
+                                    <div className='image-wrapper' key={idx}>
+                                        <img src={item.postImgUrl} alt='첨부 이미지' className='uploaded-image' />
+                                        <button className='remove-button' onClick={() => {
+                                            let selImageCP = [...selImage];
+                                            selImageCP.splice(idx, 1);
+                                            setSelImage(selImageCP)
+                                        }}></button>
+                                    </div>
+                                ))
+                            }
                         </div>
                     </div>
                 </div>

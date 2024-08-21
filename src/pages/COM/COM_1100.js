@@ -185,7 +185,7 @@ function COM1100() {
                                 <Popover id="popover-basic">
                                     <Popover.Body>
                                         <Button variant="" className="w-100 mb-2" onClick={() => {
-                                            navigation.pageOpen("/COM_1200", {communityList : communityList})
+                                            navigation.pageOpen("/COM_1200", { communityList: communityList })
                                             setShowDetailPopover(false);
                                         }}>글수정</Button>
 
@@ -209,7 +209,7 @@ function COM1100() {
                     </div>
                 </div>
 
-                <div className='form-group'>
+                {/* <div className='form-group'>
                     <label htmlFor='attachment' className='form-label'>첨부파일</label>
                     <div className='attachment-info'>
                         <span>(3/</span>
@@ -228,7 +228,27 @@ function COM1100() {
                         <span className='com-file'>첨부파일명_첨부1.png</span>
                         <span className='com-file'>첨부파일명_첨부1.png</span>
                     </div>
-                </div>
+                </div> */}
+
+                {/* <div className='form-group'>
+                    <label htmlFor='content' className='form-label'>
+                        이미지 <span className='file-count'>({selImage.length}/3)</span>
+                    </label>
+                    <div className='image-container'>
+                        {
+                            selImage.map((item, idx) => (
+                                <div className='image-wrapper' key={idx}>
+                                    <img src={item.postImgUrl} alt='첨부 이미지' className='uploaded-image' />
+                                    <button className='remove-button' onClick={() => {
+                                        let selImageCP = [...selImage];
+                                        selImageCP.splice(idx, 1);
+                                        setSelImage(selImageCP)
+                                    }}></button>
+                                </div>
+                            ))
+                        }
+                    </div>
+                </div> */}
 
                 <div className="detail-comments-header">
                     <div className={`icon-text2 ${isFavorite ? 'favorite' : 'not-favorite'}`} onClick={toggleFavorite}>123</div>
@@ -297,7 +317,7 @@ function COM1100() {
                                             :
                                             <div>
                                                 <textarea id="" className="form-textarea mt-3" placeholder="내용을 입력하세요" defaultValue={item.comment}
-                                                onChange={(e) => {setComment(e.target.value)}}></textarea>
+                                                    onChange={(e) => { setComment(e.target.value) }}></textarea>
                                                 <button className="com-button mt-3" onClick={() => { commentsEdit(item.commentId) }}>수정</button>
                                             </div>
                                     }

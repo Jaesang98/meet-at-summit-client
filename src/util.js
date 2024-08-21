@@ -123,3 +123,15 @@ String.prototype.formattedDate = function(formatString = 'YYYY-MM-DD') {
 
     return parsedDate.format(formatString);
 };
+
+//세자리 수 마다 컴마 넣기
+export function addComma(value) {
+    console.log(value)
+    value = value.replace(/,/g, '');
+    return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+//컴마 제거
+export function removeComma(value) {
+    return value.replace(/,/g, '');
+}

@@ -3,7 +3,7 @@ import Footer from '../../components/footer';
 import '../../assets/styles/style.css'
 import '../../assets/styles/com.css'
 import * as util from '../../util';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 function COM1200() {
     const navigation = util.useNavigation();
@@ -14,7 +14,9 @@ function COM1200() {
     const [selCategory, setSelCategory] = useState();
     const [selTitle, setSelTitle] = useState();
     const [selContent, setSelContent] = useState();
-  
+    const fileInputRef = useRef(null);                                  //인풋 요소
+    const [selImage, setSelImage] = useState([]);                       //이미지 파일
+
     // 카테고리 가져오기
     const communityCategoryList = async () => {
         try {
@@ -35,6 +37,30 @@ function COM1200() {
         }
     };
 
+    // 이미지 업로드
+    const ImageUpload = (e) => {
+        if (selImage.length == 3) {
+            alert("이미지 그만 담으셈")
+        }
+        else {
+            let file = e.target.files[0];
+
+            // 파일 정보 출력
+            // console.log('파일 이름:', file.name);
+            // console.log('파일 크기:', file.size, 'bytes');
+            // console.log('파일 타입:', file.type);
+
+            // 파일 미리보기 URL 생성 (선택적)
+            const previewURL = URL.createObjectURL(file);
+            let selImageCp = [...selImage];
+            selImageCp.push({
+                'postImgUrl': previewURL
+            });
+
+            setSelImage(selImageCp);
+        }
+    }
+
     //작성취소
     const communityDetailCancel = () => {
         alert("작성취소 comfirm은 곧 만들어짐 일단 취소누른순간 초기화 ㅋㅋ ㅅㄱ");
@@ -53,7 +79,8 @@ function COM1200() {
                     detailCategory: selCategory,
                     title: selTitle,
                     content: selContent,
-                    userId: 1206,
+                    userId: "1206",
+                    postImgUrl  : selImage
                 },
                 callback(res) {
                     if (res.code == 200) {
@@ -79,6 +106,7 @@ function COM1200() {
                     title: selTitle,
                     content: selContent,
                     postId: communityList.postId,
+                    postImgUrl  : selImage
                 },
                 callback(res) {
                     if (res.code == 200) {
@@ -166,7 +194,7 @@ function COM1200() {
                         }
                     </div>
 
-                    <div className='form-group'>
+                    {/* <div className='form-group'>
                         <label htmlFor='attachment' className='form-label'>첨부파일</label>
                         <button className='attach-button'>파일 첨부하기</button>
                         <div className='attachment-info'>
@@ -186,19 +214,34 @@ function COM1200() {
                             <span className='com-file'>첨부파일명_첨부1.png</span>
                             <span className='com-file'>첨부파일명_첨부1.png</span>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div className='form-group'>
                         <label htmlFor='content' className='form-label'>
-                            이미지 <span className='file-count'>(3/10)</span>
+                            이미지 <span className='file-count'>({selImage.length}/3)</span>
                         </label>
-                        <button className='attach-button'>이미지 첨부하기</button>
+                        <button className='attach-button' onClick={() => { fileInputRef.current.click(); }}>이미지 첨부하기</button>
+                        <input
+                            type='file'
+                            ref={fileInputRef}
+                            onChange={ImageUpload}
+                            accept='image/*'
+                            style={{ display: 'none' }}
+                        />
 
                         <div className='image-container'>
-                            <div className='image-wrapper'>
-                                <img src={require('../../assets/img/recentcliming.jpg')} alt='첨부 이미지' className='uploaded-image' />
-                                <button className='remove-button'></button>
-                            </div>
+                            {
+                                selImage.map((item, idx) => (
+                                    <div className='image-wrapper' key={idx}>
+                                        <img src={item.postImgUrl} alt='첨부 이미지' className='uploaded-image' />
+                                        <button className='remove-button' onClick={() => {
+                                            let selImageCP = [...selImage];
+                                            selImageCP.splice(idx, 1);
+                                            setSelImage(selImageCP)
+                                        }}></button>
+                                    </div>
+                                ))
+                            }
                         </div>
                     </div>
                 </div>

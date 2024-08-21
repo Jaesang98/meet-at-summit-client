@@ -1,18 +1,35 @@
 import Header from '../../components/header'
 import Footer from '../../components/footer';
-import { Popover, Overlay, Button } from 'react-bootstrap';
+import { Popover, Overlay, Button, Modal, ListGroup } from 'react-bootstrap';
 import '../../assets/styles/style.css'
 import '../../assets/styles/com.css'
 import * as util from '../../util';
 import { useState, useEffect } from 'react';
 
 function COM2100() {
+    const members = [
+        { id: 1, name: 'John Doe', img: 'https://via.placeholder.com/50' },
+        { id: 2, name: 'Jane Smith', img: 'https://via.placeholder.com/50' },
+        { id: 3, name: 'Alice Johnson', img: 'https://via.placeholder.com/50' },
+        { id: 4, name: 'Bob Brown', img: 'https://via.placeholder.com/50' },
+        // 더 많은 데이터를 추가하여 스크롤 가능성 테스트
+        { id: 5, name: 'Charlie Davis', img: 'https://via.placeholder.com/50' },
+        { id: 6, name: 'Dana White', img: 'https://via.placeholder.com/50' },
+        { id: 7, name: 'Eva Green', img: 'https://via.placeholder.com/50' },
+        { id: 8, name: 'Frank Black', img: 'https://via.placeholder.com/50' }
+    ];
     const navigation = util.useNavigation();
     const requestApi = util.useApi();
     const [showDetailPopover, setShowDetailPopover] = useState(false);  // 게시글 팝오버 상태
     const [showPopover, setShowPopover] = useState({});                 // 댓글별 팝오버 상태
+
+    const [show, setShow] = useState(false);
+    const handleClose = () => setShow(false);
+    const handleShow = () => setShow(true);
+
     const [target, setTarget] = useState(null);
     const [joinYn, setJoinYn] = useState("N");
+    const [joinList, setJoinList] = useState([]);
 
     const detailHandleClick = (event) => {
         setTarget(event.target);
@@ -160,7 +177,7 @@ function COM2100() {
     };
 
     const partyJoin = async () => {
-        if(joinYn == "Y"){
+        if (joinYn == "Y") {
             setJoinYn("N")
         }
 
@@ -186,8 +203,30 @@ function COM2100() {
         }
     };
 
+    //파티 멤버목록
+    const partyjoinlist = async () => {
+        try {
+            await requestApi.NetWork({
+                getYn: false,
+                method: "get",
+                url: "/api/climbing/community/partyjoinlist/",
+                params: {
+                    postId: 1,
+                },
+                callback(res) {
+                    if (res.code == 200) {
+                        setJoinList(res.data.partyJoinList);
+                    }
+                }
+            });
+        } catch (err) {
+            console.error('Error during API request:', err);
+        }
+    };
+
     useEffect(() => {
         communityDetail();
+        partyjoinlist();
     }, []);
 
     return (
@@ -236,30 +275,30 @@ function COM2100() {
                         <div className="partyinfo-header">
                             <div className="party-info-title">
                                 <span className="info-label">일시 :</span>
-                                <span className="info-content">2024.06.28.13:00</span>
+                                <span className="info-content">{communityList.partyStartDate} {communityList.partyStartTime}</span>
                             </div>
                             <div className="party-info-right">
                                 <span className="party-info-participants">
                                     <span className="info-label">참여 :</span>
-                                    <span className="party-number">52</span>
+                                    <span className="party-number">{communityList.author}</span>
                                 </span>
-                                <Button variant="light" className="btn-member-list">
+                                <Button variant="light" className="btn-member-list" onClick={handleShow}>
                                     멤버 목록
                                 </Button>
                             </div>
                         </div>
 
                         <div className="party-info-row">
-                            <span><span className="info-label">장소:</span> <span className="info-content">하남 스타필드 클라이밍장</span></span>
+                            <span><span className="info-label">장소:</span> <span className="info-content">{communityList.partyLocation}</span></span>
                         </div>
 
                         <div className="party-info-row">
-                            <span><span className="info-label">참여비:</span> <span className="info-content">10,000원</span></span>
+                            <span><span className="info-label">참여비:</span> <span className="info-content">{communityList.partyEntryFee}원</span></span>
                             {/* 비활성화 disabled추가 */}
                             {
-                                joinYn == 'N' ? 
-                                <Button variant="" className="btn-participate" onClick={partyJoin}>파티 참여하기</Button> :
-                                <Button variant="" className="btn-participate" onClick={partyJoin}>파티 참여취소</Button>
+                                joinYn == 'N' ?
+                                    <Button variant="" className="btn-participate" onClick={partyJoin}>파티 참여하기</Button> :
+                                    <Button variant="" className="btn-participate" onClick={partyJoin}>파티 참여취소</Button>
                             }
                         </div>
                     </div>
@@ -293,7 +332,7 @@ function COM2100() {
                 <div className="detail-comments-header">
                     <div className={`icon-text2 ${isFavorite ? 'favorite' : 'not-favorite'}`} onClick={toggleFavorite}>123</div>
                     <div className="icon-text comment-count">댓글
-                        <span>45</span>
+                        <span>{communityList.commentCnt}</span>
                     </div>
                 </div>
 
@@ -366,6 +405,73 @@ function COM2100() {
                         ))
                     }
                 </div>
+
+                <Modal show={show} onHide={handleClose} centered>
+                    <Modal.Header closeButton>
+                        <Modal.Title>멤버 목록</Modal.Title>
+                    </Modal.Header>
+
+                    <Modal.Body style={{ maxHeight: '400px', overflowY: 'auto' }}>
+                        {/* 파티장 */}
+                        <div className="mb-3 align-items-center justify-content-between">
+                            <div>
+                                <strong>파티장</strong>
+                            </div>
+                            <div className="d-flex align-items-center" style={{padding: '15px'}}>
+                                <img
+                                    src="https://via.placeholder.com/50"
+                                    alt="AA"
+                                    style={{ width: '50px', height: '50px', marginRight: '15px', borderRadius: '50%' }}
+                                />
+                                <div>
+                                    <h5 className="mb-1">NAMNAM</h5>
+                                    <small>ID: AAA</small>
+                                </div>
+                            </div>
+                        </div>
+                        <hr />
+
+                        {/* 멤버 */}
+                        <div className="mb-3 d-flex align-items-center justify-content-between">
+                            <div>
+                                <strong>멤버</strong>
+                            </div>
+                            <div className="detail-author">참여자: {joinList.length}</div>
+                        </div>
+                        <ListGroup variant="flush">
+                            {joinList.map((member,idx) => (
+                                <ListGroup.Item key={idx} className="d-flex justify-content-between align-items-center">
+                                    <div className="d-flex align-items-center">
+                                        <img
+                                            src={member.img}
+                                            alt={member.name}
+                                            style={{ width: '50px', height: '50px', marginRight: '15px', borderRadius: '50%' }}
+                                        />
+                                        <div>
+                                            <h5 className="mb-1">{member.name}</h5>
+                                            <small>ID: {member.userId}</small>
+                                        </div>
+                                    </div>
+                                    {/* 파티장 시점 */}
+                                    {/* <div className="d-flex gap-2">
+                                        <Button variant="primary btn-member-list" size="sm">승인</Button>
+                                        <Button variant="secondary" size="sm">거절</Button>
+                                    </div> */}
+                                    {/* 멤버들 시점 */}
+                                    <div className="d-flex gap-2">
+                                        <span className="party-number">승인완료</span>
+                                        <span className="party-number text-secondary">승인대기</span>
+                                        <span className="party-number text-danger">승인거절</span>
+                                    </div>
+                                </ListGroup.Item>
+                            ))}
+                        </ListGroup>
+                    </Modal.Body>
+
+                    <Modal.Footer>
+                        <Button variant="primary btn-member-list" onClick={handleClose}>닫기</Button>
+                    </Modal.Footer>
+                </Modal>
             </section>
 
             <Footer></Footer>
