@@ -308,7 +308,7 @@ function COM2100() {
                     </div>
                 </div>
 
-                <div className='form-group'>
+                {/* <div className='form-group'>
                     <label htmlFor='attachment' className='form-label'>첨부파일</label>
                     <div className='attachment-info'>
                         <span>(3/</span>
@@ -326,6 +326,21 @@ function COM2100() {
                         <span className='com-file'>첨부파일명_첨부1.png</span>
                         <span className='com-file'>첨부파일명_첨부1.png</span>
                         <span className='com-file'>첨부파일명_첨부1.png</span>
+                    </div>
+                </div> */}
+
+                <div className='form-group'>
+                    <label htmlFor='content' className='form-label'>
+                        이미지 <span className='file-count'>({(communityList.postImgUrl || []).length}/3)</span>
+                    </label>
+                    <div className='image-container'>
+                        {
+                            (communityList.postImgUrl || []).map((item, idx) => (
+                                <div className='image-wrapper' key={idx}>
+                                    <img src={item} alt='첨부 이미지' className='uploaded-image' />
+                                </div>
+                            ))
+                        }
                     </div>
                 </div>
 
@@ -417,7 +432,7 @@ function COM2100() {
                             <div>
                                 <strong>파티장</strong>
                             </div>
-                            <div className="d-flex align-items-center" style={{padding: '15px'}}>
+                            <div className="d-flex align-items-center" style={{ padding: '15px' }}>
                                 <img
                                     src="https://via.placeholder.com/50"
                                     alt="AA"
@@ -439,7 +454,7 @@ function COM2100() {
                             <div className="detail-author">참여자: {joinList.length}</div>
                         </div>
                         <ListGroup variant="flush">
-                            {joinList.map((member,idx) => (
+                            {joinList.map((member, idx) => (
                                 <ListGroup.Item key={idx} className="d-flex justify-content-between align-items-center">
                                     <div className="d-flex align-items-center">
                                         <img

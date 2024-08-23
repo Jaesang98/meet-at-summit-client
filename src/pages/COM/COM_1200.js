@@ -11,7 +11,7 @@ function COM1200() {
 
     const [detailCategoryList, setDetailCategoryList] = useState([]);   // 카테고리 리스트
     const { communityList } = util.useLocationParams();                 // 상세 게시글
-    const [selCategory, setSelCategory] = useState();
+    const [selCategory, setSelCategory] = useState("1");
     const [selTitle, setSelTitle] = useState();
     const [selContent, setSelContent] = useState();
     const fileInputRef = useRef(null);                                  //인풋 요소
@@ -53,11 +53,10 @@ function COM1200() {
             // 파일 미리보기 URL 생성 (선택적)
             const previewURL = URL.createObjectURL(file);
             let selImageCp = [...selImage];
-            selImageCp.push({
-                'postImgUrl': previewURL
-            });
+            selImageCp.push(previewURL);
 
             setSelImage(selImageCp);
+            e.target.value = '';
         }
     }
 
@@ -127,6 +126,7 @@ function COM1200() {
             setSelCategory(communityList.detailCategory);
             setSelTitle(communityList.title);
             setSelContent(communityList.content);
+            setSelImage(communityList.postImgUrl);
         }
     }, []);
 
@@ -231,9 +231,9 @@ function COM1200() {
 
                         <div className='image-container'>
                             {
-                                selImage.map((item, idx) => (
+                                selImage.map((img, idx) => (
                                     <div className='image-wrapper' key={idx}>
-                                        <img src={item.postImgUrl} alt='첨부 이미지' className='uploaded-image' />
+                                        <img src={img} alt='첨부 이미지' className='uploaded-image' />
                                         <button className='remove-button' onClick={() => {
                                             let selImageCP = [...selImage];
                                             selImageCP.splice(idx, 1);

@@ -230,25 +230,20 @@ function COM1100() {
                     </div>
                 </div> */}
 
-                {/* <div className='form-group'>
+                <div className='form-group'>
                     <label htmlFor='content' className='form-label'>
-                        이미지 <span className='file-count'>({selImage.length}/3)</span>
+                        이미지 <span className='file-count'>({(communityList.postImgUrl || []).length}/3)</span>
                     </label>
                     <div className='image-container'>
                         {
-                            selImage.map((item, idx) => (
+                            (communityList.postImgUrl || []).map((item, idx) => (
                                 <div className='image-wrapper' key={idx}>
-                                    <img src={item.postImgUrl} alt='첨부 이미지' className='uploaded-image' />
-                                    <button className='remove-button' onClick={() => {
-                                        let selImageCP = [...selImage];
-                                        selImageCP.splice(idx, 1);
-                                        setSelImage(selImageCP)
-                                    }}></button>
+                                    <img src={item} alt='첨부 이미지' className='uploaded-image' />
                                 </div>
                             ))
                         }
                     </div>
-                </div> */}
+                </div>
 
                 <div className="detail-comments-header">
                     <div className={`icon-text2 ${isFavorite ? 'favorite' : 'not-favorite'}`} onClick={toggleFavorite}>123</div>

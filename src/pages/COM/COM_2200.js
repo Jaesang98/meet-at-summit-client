@@ -45,11 +45,10 @@ function COM2200() {
             // 파일 미리보기 URL 생성 (선택적)
             const previewURL = URL.createObjectURL(file);
             let selImageCp = [...selImage];
-            selImageCp.push({
-                'postImgUrl': previewURL
-            });
+            selImageCp.push(previewURL);
 
             setSelImage(selImageCp);
+            e.target.value = '';
         }
     }
 
@@ -170,6 +169,7 @@ function COM2200() {
                 selLocation: communityList.partyLocation,
                 selEntryFee: communityList.partyEntryFee,
             }
+            setSelImage(communityList.postImgUrl);
         }
 
         setDetailFormat(obj);
@@ -344,9 +344,9 @@ function COM2200() {
 
                         <div className='image-container'>
                             {
-                                selImage.map((item, idx) => (
+                                selImage.map((img, idx) => (
                                     <div className='image-wrapper' key={idx}>
-                                        <img src={item.postImgUrl} alt='첨부 이미지' className='uploaded-image' />
+                                        <img src={img} alt='첨부 이미지' className='uploaded-image' />
                                         <button className='remove-button' onClick={() => {
                                             let selImageCP = [...selImage];
                                             selImageCP.splice(idx, 1);

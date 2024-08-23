@@ -56,7 +56,7 @@ function SRC1000() {
                     </ul>
 
                     <div className='filter-option'>
-                        <span className='option-map'>지도로 찾기</span>
+                        <span className='option-map' onClick={()=> {navigation.pageOpen('/SRC_2000')}}>지도로 찾기</span>
                     </div>
                 </div>
 

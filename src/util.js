@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import { useNavigate, useLocation  } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import moment from 'moment';
 
@@ -46,6 +46,7 @@ export function useApi() {
         method = 'get',
         url,
         params = {},
+        headers = {}, // 헤더 추가
         callback
     }) => {
         setLoading(true);
@@ -59,16 +60,20 @@ export function useApi() {
                 response = await axios({
                     method,
                     url,
-                    data: params
+                    data: params,
+                    headers // 헤더 포함
                 });
 
                 // getYn이 true이고 첫 번째 요청이 성공적이면 GET 요청 수행
                 if (getYn && response.data) {
-                    response = await axios.get(url);
+                    response = await axios.get(url, { headers }); // 헤더 포함
                 }
             } else {
                 // method가 'get'인 경우
-                response = await axios.get(url, { params: params });
+                response = await axios.get(url, {
+                    params: params,
+                    headers // 헤더 포함
+                });
             }
 
             // 콜백 함수 호출
@@ -93,12 +98,12 @@ export function useApi() {
 }
 
 // 날짜변환
-String.prototype.formattedDate = function(formatString = 'YYYY-MM-DD') {
+String.prototype.formattedDate = function (formatString = 'YYYY-MM-DD') {
     // 입력된 문자열에서 숫자만 추출
     const numericDate = this.replace(/\D/g, '');
     let dateFormat;
 
-    switch(numericDate.length) {
+    switch (numericDate.length) {
         case 8: // YYYYMMDD
             dateFormat = 'YYYYMMDD';
             break;
@@ -115,7 +120,7 @@ String.prototype.formattedDate = function(formatString = 'YYYY-MM-DD') {
 
     // 지정된 형식으로 파싱 및 포맷
     const parsedDate = moment(numericDate, dateFormat);
-    
+
     if (!parsedDate.isValid()) {
         console.error('Invalid date format');
         return 'Invalid Date';
