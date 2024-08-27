@@ -12,7 +12,6 @@ function COM2100() {
         { id: 2, name: 'Jane Smith', img: 'https://via.placeholder.com/50' },
         { id: 3, name: 'Alice Johnson', img: 'https://via.placeholder.com/50' },
         { id: 4, name: 'Bob Brown', img: 'https://via.placeholder.com/50' },
-        // 더 많은 데이터를 추가하여 스크롤 가능성 테스트
         { id: 5, name: 'Charlie Davis', img: 'https://via.placeholder.com/50' },
         { id: 6, name: 'Dana White', img: 'https://via.placeholder.com/50' },
         { id: 7, name: 'Eva Green', img: 'https://via.placeholder.com/50' },
@@ -28,7 +27,7 @@ function COM2100() {
     const handleShow = () => setShow(true);
 
     const [target, setTarget] = useState(null);
-    const [joinYn, setJoinYn] = useState("N");
+    const [joinYn, setJoinYn] = useState();
     const [joinList, setJoinList] = useState([]);
 
     const detailHandleClick = (event) => {
@@ -68,6 +67,7 @@ function COM2100() {
                 callback(res) {
                     setCommunityList(res.data.communityList[0]);
                     setCommentList(res.data.commentList);
+                    setJoinYn(res.data.communityList[0].joinYn);
 
                     const commentMap = res.data.commentList.reduce((acc, item) => {
                         acc[item.commentId] = false;
@@ -176,11 +176,7 @@ function COM2100() {
         }
     };
 
-    const partyJoin = async () => {
-        if (joinYn == "Y") {
-            setJoinYn("N")
-        }
-
+    const partyJoin = async (value) => {
         try {
             await requestApi.NetWork({
                 getYn: false,
@@ -189,11 +185,12 @@ function COM2100() {
                 params: {
                     postId: postId,
                     userId: 1206,
-                    joinYn: joinYn
+                    joinYn: value
                 },
                 callback(res) {
                     if (res.code == 200) {
-                        alert("게시글 삭제됨 ㅋㅋㅅㄱ");
+                        alert("파티참여여부 ALERT");
+                        setJoinYn(value);
                         navigation.pageClose();
                     }
                 }
@@ -215,11 +212,33 @@ function COM2100() {
                 },
                 callback(res) {
                     if (res.code == 200) {
+                        console.log(res.data.partyJoinList)
                         setJoinList(res.data.partyJoinList);
                     }
                 }
             });
         } catch (err) {
+            let partyJoinList = [
+                {
+                    memberId: "asdasd",
+                    memberNm: "임채성",
+                    memberImg: "11",
+                    isApproved: "A"
+                },
+                {
+                    memberId: "asdasd",
+                    memberNm: "임채성",
+                    memberImg: "11",
+                    isApproved: "B"
+                },
+                {
+                    memberId: "asdasd",
+                    memberNm: "임채성",
+                    memberImg: "11",
+                    isApproved: "C"
+                },
+            ]
+            setJoinList(partyJoinList);
             console.error('Error during API request:', err);
         }
     };
@@ -297,8 +316,8 @@ function COM2100() {
                             {/* 비활성화 disabled추가 */}
                             {
                                 joinYn == 'N' ?
-                                    <Button variant="" className="btn-participate" onClick={partyJoin}>파티 참여하기</Button> :
-                                    <Button variant="" className="btn-participate" onClick={partyJoin}>파티 참여취소</Button>
+                                    <Button variant="" className="btn-participate" onClick={() => { partyJoin("Y") }}>파티 참여하기</Button> :
+                                    <Button variant="" className="btn-participate" onClick={() => { partyJoin("N") }}>파티 참여취소</Button>
                             }
                         </div>
                     </div>
@@ -458,26 +477,26 @@ function COM2100() {
                                 <ListGroup.Item key={idx} className="d-flex justify-content-between align-items-center">
                                     <div className="d-flex align-items-center">
                                         <img
-                                            src={member.img}
-                                            alt={member.name}
+                                            src={member.memberImg}
                                             style={{ width: '50px', height: '50px', marginRight: '15px', borderRadius: '50%' }}
                                         />
                                         <div>
-                                            <h5 className="mb-1">{member.name}</h5>
-                                            <small>ID: {member.userId}</small>
+                                            <h5 className="mb-1">{member.memberNm}</h5>
+                                            <small>ID: {member.memberId}</small>
                                         </div>
                                     </div>
-                                    {/* 파티장 시점 */}
-                                    {/* <div className="d-flex gap-2">
-                                        <Button variant="primary btn-member-list" size="sm">승인</Button>
-                                        <Button variant="secondary" size="sm">거절</Button>
-                                    </div> */}
-                                    {/* 멤버들 시점 */}
-                                    <div className="d-flex gap-2">
-                                        <span className="party-number">승인완료</span>
-                                        <span className="party-number text-secondary">승인대기</span>
-                                        <span className="party-number text-danger">승인거절</span>
-                                    </div>
+                                    {
+                                        member.isApproved === "B" ?
+                                            <div className="d-flex gap-2">
+                                                <Button variant="primary btn-member-list" size="sm">승인</Button>
+                                                <Button variant="secondary" size="sm">거절</Button>
+                                            </div> :
+                                            <div className="d-flex gap-2">
+                                                {member.isApproved === "A" && <span className="party-number">승인완료</span>}
+                                                {member.isApproved === "B" && <span className="party-number text-secondary">승인대기</span>}
+                                                {member.isApproved === "C" && <span className="party-number text-danger">승인거절</span>}
+                                            </div>
+                                    }
                                 </ListGroup.Item>
                             ))}
                         </ListGroup>
