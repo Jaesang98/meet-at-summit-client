@@ -5,13 +5,17 @@ import './index.css';
 import Router from './router';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter } from "react-router-dom";
+import { Provider } from "react-redux";
+import store from './store.js'
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
+  <Provider store={store}>
     <BrowserRouter basename={process.env.PUBLIC_URL}>
       <Router />
     </BrowserRouter>
+  </Provider>
   // </React.StrictMode>
 );
 

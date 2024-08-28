@@ -5,6 +5,8 @@ import '../../assets/styles/style.css'
 import '../../assets/styles/home.css'
 import * as util from '../../util';
 import { useState, useEffect } from 'react';
+import { setUserInfo } from '../../store';
+import { useDispatch } from 'react-redux';
 
 function HOM1000() {
     const navigation = util.useNavigation();
@@ -17,6 +19,69 @@ function HOM1000() {
     const [communityListFilter, setCommunityListFilter] = useState([]); //커뮤니티 필터링
     const [communityCategory, setCommunityCategory] = useState("0");    //커뮤니티 구분 =>  0:전체 1:자유 2:파티
     const [mainImage, setMainImage] = useState("");                     //클라이밍장 정보 이미지
+
+    const code = new URL(window.location.href).searchParams.get("code");
+    const dispatch = useDispatch();
+
+    //카카오 토큰
+    const KakaoAccessToken = async (code) => {
+        try {
+            await requestApi.NetWork({
+                getYn: false,
+                method: "POST",
+                url: "https://kauth.kakao.com/oauth/token",
+                params: {
+                    grant_type: 'authorization_code',
+                    client_id: '83190cb35a9f7a2d08b27d403091e18b',
+                    redirect_uri: 'http://localhost:3000/meet_at_summit',
+                    code: code
+                },
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                callback(res) {
+                    console.log(res)
+                    dispatch(setUserInfo({ userId: '1206', name: '남재상', kakaoToken: res.access_token }));
+                }
+            });
+        } catch (err) {
+            console.error('Error during API request:', err);
+        }
+    };
+
+    //네이버 토큰
+    const NaverAcessToken = async (code) => {
+        try {
+            await requestApi.NetWork({
+                getYn: false,
+                method: "POST",
+                url: "https://nid.naver.com/oauth2.0/token",
+                params: {
+                    grant_type: 'authorization_code',
+                    client_id: 'Y_6oPTvx2tHAMxOesxq0',
+                    client_secret: '3kv77Fxi4b',
+                    code: code,
+                    state: '0ucbn7uz94y',
+                },
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded'
+                },
+                callback(res) {
+                    console.log(res)
+                    dispatch(setUserInfo({ userId: '1206', name: '남재상', naverToken: res.access_token }));
+                }
+            });
+        } catch (err) {
+            console.error('Error during API request:', err);
+        }
+    };
+
+    useEffect(() => {
+        if (code) {
+            KakaoAccessToken(code);
+            // NaverAcessToken(code);
+        }
+    }, [code]);
 
     //카테고리 구분
     const categoryChange = (category => {
@@ -31,7 +96,7 @@ function HOM1000() {
                 method: "get",
                 url: "/api/climbing/main/",
                 params: {
-                    userId: '4'
+                    userId: '1206'
                 },
                 callback(res) {
                     setRecentGymList(res.data.recentGymList);
@@ -64,7 +129,7 @@ function HOM1000() {
             );
             setCommunityListFilter(filtered);
         }
-    },[communityCategory, setCommunityCategory])
+    }, [communityCategory, setCommunityCategory])
 
     return (
         <div>
@@ -112,7 +177,7 @@ function HOM1000() {
 
                         {
                             newOpenGymList.map((item, idx) => (
-                                <div className="card mb-3" key={idx} onClick={()=>{navigation.pageOpen("/SRC_1100")}}>
+                                <div className="card mb-3" key={idx} onClick={() => { navigation.pageOpen("/SRC_1100") }}>
                                     <div className="row g-0">
                                         <div className="col-md-4">
                                             <img src={item.imgUrl} className="img-fluid rounded-start clim-img" alt="..." />
@@ -143,7 +208,7 @@ function HOM1000() {
 
                         {
                             locationGymList.map((item, idx) => (
-                                <div className="card mb-3" key={idx} onClick={()=>{navigation.pageOpen("/SRC_1100")}}>
+                                <div className="card mb-3" key={idx} onClick={() => { navigation.pageOpen("/SRC_1100") }}>
                                     <div className="row g-0">
                                         <div className="col-md-4">
                                             <img src={item.imgUrl} className="img-fluid rounded-start clim-img" alt="..." />
@@ -202,7 +267,7 @@ function HOM1000() {
                     <div className='clim-info'>
                         <h4>클라이밍장 정보</h4>
                         <img src={mainImage}
-                        alt="클라이밍 정보" className="img-fluid"></img>
+                            alt="클라이밍 정보" className="img-fluid"></img>
                     </div>
                 </div>
             </section>

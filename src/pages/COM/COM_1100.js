@@ -95,7 +95,7 @@ function COM1100() {
                 url: "/api/climbing/community/comment/",
                 params: {
                     postId: communityList.postId,
-                    userId: 1206,
+                    userId: "1206",
                     comment: comment
                 },
                 callback(res) {

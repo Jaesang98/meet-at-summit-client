@@ -48,7 +48,7 @@ function COM2100() {
         setIsFavorite(!isFavorite);
     };
 
-    const { postId } = util.useLocationParams();            //유틸리티 함수 사용
+    const { postId } = util.useLocationParams();
     const [communityList, setCommunityList] = useState([]); //자유게시판 상세내용
     const [commentList, setCommentList] = useState([]);     //자유게시판 댓글
     const [commentClick, setCommentClick] = useState({})    //수정 여부
@@ -63,6 +63,7 @@ function COM2100() {
                 url: "/api/climbing/community/detail/",
                 params: {
                     postId: postId,
+                    userId : '1206'
                 },
                 callback(res) {
                     setCommunityList(res.data.communityList[0]);
@@ -113,7 +114,7 @@ function COM2100() {
                 url: "/api/climbing/community/comment/",
                 params: {
                     postId: communityList.postId,
-                    userId: 1206,
+                    userId: "1206",
                     comment: comment
                 },
                 callback(res) {
@@ -176,6 +177,7 @@ function COM2100() {
         }
     };
 
+    //파티참여여부
     const partyJoin = async (value) => {
         try {
             await requestApi.NetWork({
@@ -184,7 +186,7 @@ function COM2100() {
                 url: "/api/climbing/community/partyjoin/",
                 params: {
                     postId: postId,
-                    userId: 1206,
+                    userId: "1206",
                     joinYn: value
                 },
                 callback(res) {
@@ -208,37 +210,15 @@ function COM2100() {
                 method: "get",
                 url: "/api/climbing/community/partyjoinlist/",
                 params: {
-                    postId: 1,
+                    postId: postId,
                 },
                 callback(res) {
                     if (res.code == 200) {
-                        console.log(res.data.partyJoinList)
                         setJoinList(res.data.partyJoinList);
                     }
                 }
             });
         } catch (err) {
-            let partyJoinList = [
-                {
-                    memberId: "asdasd",
-                    memberNm: "임채성",
-                    memberImg: "11",
-                    isApproved: "A"
-                },
-                {
-                    memberId: "asdasd",
-                    memberNm: "임채성",
-                    memberImg: "11",
-                    isApproved: "B"
-                },
-                {
-                    memberId: "asdasd",
-                    memberNm: "임채성",
-                    memberImg: "11",
-                    isApproved: "C"
-                },
-            ]
-            setJoinList(partyJoinList);
             console.error('Error during API request:', err);
         }
     };
@@ -315,7 +295,7 @@ function COM2100() {
                             <span><span className="info-label">참여비:</span> <span className="info-content">{communityList.partyEntryFee}원</span></span>
                             {/* 비활성화 disabled추가 */}
                             {
-                                joinYn == 'N' ?
+                                communityList.joinYn != 'Y' ?
                                     <Button variant="" className="btn-participate" onClick={() => { partyJoin("Y") }}>파티 참여하기</Button> :
                                     <Button variant="" className="btn-participate" onClick={() => { partyJoin("N") }}>파티 참여취소</Button>
                             }
@@ -482,7 +462,7 @@ function COM2100() {
                                         />
                                         <div>
                                             <h5 className="mb-1">{member.memberNm}</h5>
-                                            <small>ID: {member.memberId}</small>
+                                            <small>ID: {member.userId}</small>
                                         </div>
                                     </div>
                                     {

@@ -96,13 +96,13 @@ function COM2200() {
                     partyEndTime: detailFormat.selEndTime,                      //종료시간
                     partyLocation: detailFormat.selLocation,                    //위치
                     partyEntryFee: util.removeComma(detailFormat.selEntryFee),  //가격
-                    postImgUrl  : selImage                                      //업로드 이미지
+                    postImgUrl: selImage                                      //업로드 이미지
                 },
                 callback(res) {
                     if (res.code == 200) {
-                        alert("저장됨 ㅋㅋ 빼도박도못함");
                         navigation.pageClose();
-                    }
+                        // partyJoin();
+                    }   
                 }
             });
         } catch (err) {
@@ -128,11 +128,35 @@ function COM2200() {
                     partyEndTime: detailFormat.selEndTime,                      //종료시간
                     partyLocation: detailFormat.selLocation,                    //위치
                     partyEntryFee: util.removeComma(detailFormat.selEntryFee),  //가격
-                    postImgUrl  : selImage                                      //업로드 이미지
+                    postImgUrl: selImage                                      //업로드 이미지
                 },
                 callback(res) {
                     if (res.code == 200) {
                         alert("저장됨 ㅋㅋ 빼도박도못함");
+                        navigation.pageClose();
+                    }
+                }
+            });
+        } catch (err) {
+            console.error('Error during API request:', err);
+        }
+    };
+
+    //파티참여여부
+    const partyJoin = async () => {
+        try {
+            await requestApi.NetWork({
+                getYn: false,
+                method: "POST",
+                url: "/api/climbing/community/partyjoin/",
+                params: {
+                    postId: communityList.postId,
+                    userId: "1206",
+                    joinYn: "Y"
+                },
+                callback(res) {
+                    if (res.code == 200) {
+                        alert("파티참여여부 ALERT");
                         navigation.pageClose();
                     }
                 }
