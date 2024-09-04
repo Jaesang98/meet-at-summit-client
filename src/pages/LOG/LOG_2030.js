@@ -2,11 +2,17 @@ import Header from '../../components/header'
 import Footer from '../../components/footer'
 import '../../assets/styles/style.css'
 import '../../assets/styles/log.css'
+import * as util from '../../util';
 
 function LOG2030() {
+    const navigation = util.useNavigation();
+    const { name } = util.useLocationParams();            //유틸리티 함수 사용
+
+    console.log(name)
+    
     return (
         <div>
-            <Header></Header>
+            {/* <Header></Header> */}
 
             <section className='Container'>
                 <div className='agreement-area'>
@@ -39,12 +45,12 @@ function LOG2030() {
                         </div>
 
                         <div className='mt-3'>
-                            <span><strong>홍길동님!</strong> 가입을 축하드려요!</span>
+                            <span><strong>{name}님!</strong> 가입을 축하드려요!</span>
                             <p>지금 로그인하고 다양한 클라이밍 정보와 파티를 찾아보세요!</p>
                         </div>
                     </div>
 
-                    <button className='signup-button mt-3'>로그인</button>
+                    <button className='signup-button mt-3' onClick={()=> {navigation.pageOpen('/')}}>시작하기</button>
                 </div>
             </section>
 

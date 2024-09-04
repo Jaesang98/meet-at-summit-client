@@ -140,3 +140,8 @@ export function addComma(value) {
 export function removeComma(value) {
     return value.replace(/,/g, '');
 }
+
+export function passwordRegex(value) {
+    const regex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,16}$/;
+    return regex.test(value);
+}

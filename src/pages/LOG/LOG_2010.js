@@ -2,11 +2,15 @@ import Header from '../../components/header'
 import Footer from '../../components/footer'
 import '../../assets/styles/style.css'
 import '../../assets/styles/log.css'
+import * as util from '../../util';
 
 function LOG2010() {
+    const navigation = util.useNavigation();
+    const requestApi = util.useApi();
+
     return (
         <div>
-            <Header></Header>
+            {/* <Header></Header> */}
 
             <section className='Container'>
                 <div className='agreement-area'>
@@ -72,7 +76,7 @@ function LOG2010() {
                         </div>
                     </div>
 
-                    <button className='signup-button mt-3'>동의하고 가입하기</button>
+                    <button className='signup-button mt-3' onClick={() => { navigation.pageOpen('/LOG_2020') }}>동의하고 가입하기</button>
                 </div>
             </section>
 

@@ -2,10 +2,42 @@ import { Modal, Button, Form } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '../assets/styles/log.css';
 import { useNavigation, useApi } from '../util';
+import { useState } from 'react';
+import { setUserInfo } from '../store';
+import { useDispatch } from 'react-redux';
 
 function LOGIN({ show, handleClose }) {
     const navigation = useNavigation();
     const requestApi = useApi();
+    const dispatch = useDispatch();
+
+    //일반 로그인
+    const [userId, setuserId] = useState("");
+    const [userPw, setuserPw] = useState("");
+    const userLogin = async () => {
+        if (userId == "" || userPw == "") {
+            alert("아이디나 비밀번호 똑바로 쓰셈")
+        }
+        else {
+            try {
+                await requestApi.NetWork({
+                    getYn: false,
+                    method: "POST",
+                    url: "/api/climbing/auth/login",
+                    params: {
+                        userId: userId,
+                        passwd: userPw
+                    },
+                    callback(res) {
+                        dispatch(setUserInfo({ userId: res.data.userId, name: res.data.name }));
+                        window.location.reload();
+                    }
+                });
+            } catch (err) {
+                console.error('Error during API request:', err);
+            }
+        }
+    }
 
     // 네이버 로그인 정보
     const NAVER_CLIENT_ID = "Y_6oPTvx2tHAMxOesxq0"
@@ -34,16 +66,16 @@ function LOGIN({ show, handleClose }) {
                     <Form>
                         <Form.Group className="mb-3" controlId="formBasicEmail">
                             <Form.Label>아이디</Form.Label>
-                            <Form.Control type="email" placeholder="아이디 입력" />
+                            <Form.Control placeholder="아이디 입력" onChange={(e) => { setuserId(e.target.value) }} />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicPassword">
                             <Form.Label>비밀번호</Form.Label>
-                            <Form.Control type="password" placeholder="비밀번호 입력" />
+                            <Form.Control type="password" placeholder="비밀번호 입력" onChange={(e) => { setuserPw(e.target.value) }} />
                         </Form.Group>
                         <Form.Group className="mb-3" controlId="formBasicCheckbox">
                             <Form.Check type="checkbox" label="로그인 상태 유지" />
                         </Form.Group>
-                        <Button variant="primary" type="submit" className="w-100 mb-3 btn_Login">
+                        <Button variant="primary" className="w-100 mb-3 btn_Login" onClick={userLogin}>
                             로그인
                         </Button>
                         <div className="text-center mb-3">

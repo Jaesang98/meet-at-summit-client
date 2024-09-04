@@ -21,6 +21,7 @@ function HOM1000() {
     const [mainImage, setMainImage] = useState("");                     //클라이밍장 정보 이미지
 
     const code = new URL(window.location.href).searchParams.get("code");
+    const state = new URL(window.location.href).searchParams.get("state");
     const dispatch = useDispatch();
 
     //카카오 토큰
@@ -28,20 +29,56 @@ function HOM1000() {
         try {
             await requestApi.NetWork({
                 getYn: false,
-                method: "POST",
-                url: "https://kauth.kakao.com/oauth/token",
+                method: "get",
+                url: "/api/climbing/auth/kakaotoken",
                 params: {
-                    grant_type: 'authorization_code',
-                    client_id: '83190cb35a9f7a2d08b27d403091e18b',
-                    redirect_uri: 'http://localhost:3000/meet_at_summit',
                     code: code
                 },
+                callback(res) {
+                    kakaoUserInfo(res.access_token);
+                }
+            });
+        } catch (err) {
+            console.error('Error during API request:', err);
+        }
+
+        // try {
+        //     await requestApi.NetWork({
+        //         getYn: false,
+        //         method: "POST",
+        //         url: "https://kauth.kakao.com/oauth/token",
+        //         params: {
+        //             grant_type: 'authorization_code',
+        //             client_id: '83190cb35a9f7a2d08b27d403091e18b',
+        //             redirect_uri: 'http://localhost:3000/meet_at_summit',
+        //             code: code
+        //         },
+        //         headers: {
+        //             'Content-Type': 'application/x-www-form-urlencoded'
+        //         },
+        //         callback(res) {
+        //             console.log(res)
+        //             dispatch(setUserInfo({ userId: '1206', name: '남재상', kakaoToken: res.access_token }));
+        //         }
+        //     });
+        // } catch (err) {
+        //     console.error('Error during API request:', err);
+        // }
+    };
+
+    //카카오 유저정보
+    const kakaoUserInfo = async (token) => {
+        try {
+            await requestApi.NetWork({
+                getYn: false,
+                method: "POST",
+                url: "https://kapi.kakao.com/v2/user/me",
+                params: {},
                 headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    "Authorization": `Bearer ${token}`
                 },
                 callback(res) {
                     console.log(res)
-                    dispatch(setUserInfo({ userId: '1206', name: '남재상', kakaoToken: res.access_token }));
                 }
             });
         } catch (err) {
@@ -50,38 +87,94 @@ function HOM1000() {
     };
 
     //네이버 토큰
-    const NaverAcessToken = async (code) => {
+    const NaverAcessToken = async (code, state) => {
         try {
             await requestApi.NetWork({
                 getYn: false,
-                method: "POST",
-                url: "https://nid.naver.com/oauth2.0/token",
+                method: "get",
+                url: "/api/climbing/auth/navertoken",
                 params: {
-                    grant_type: 'authorization_code',
-                    client_id: 'Y_6oPTvx2tHAMxOesxq0',
-                    client_secret: '3kv77Fxi4b',
                     code: code,
-                    state: '0ucbn7uz94y',
-                },
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
+                    state: state,
                 },
                 callback(res) {
-                    console.log(res)
-                    dispatch(setUserInfo({ userId: '1206', name: '남재상', naverToken: res.access_token }));
+                    NaverUserInfo(res.access_token)
+                    console.log(res.access_token)
                 }
             });
         } catch (err) {
             console.error('Error during API request:', err);
         }
+
+
+        // try {
+        //     await requestApi.NetWork({
+        //         getYn: false,
+        //         method: "POST",
+        //         url: "https://nid.naver.com/oauth2.0/token",
+        //         params: {
+        //             grant_type: 'authorization_code',
+        //             client_id: 'Y_6oPTvx2tHAMxOesxq0',
+        //             client_secret: '3kv77Fxi4b',
+        //             code: code,
+        //             state: '0ucbn7uz94y',
+        //         },
+        //         headers: {
+        //             'Content-Type': 'application/x-www-form-urlencoded'
+        //         },
+        //         callback(res) {
+        //             dispatch(setUserInfo({ userId: '1206', name: '남재상', naverToken: res.access_token }));
+        //         }
+        //     });
+        // } catch (err) {
+        //     console.error('Error during API request:', err);
+        // }
+    };
+
+    const NaverUserInfo = async (token) => {
+        try {
+            await requestApi.NetWork({
+                getYn: false,
+                method: "get",
+                url: "/api/climbing/auth/naverinfo",
+                params: {
+                    token : token
+                },
+                callback(res) {
+                    console.log(res)
+                }
+            });
+        } catch (err) {
+            console.error('Error during API request:', err);
+        }
+
+
+        // try {
+        //     await requestApi.NetWork({
+        //         getYn: false,
+        //         method: "get",
+        //         url: "https://openapi.naver.com/v1/nid/me",
+        //         params: {},
+        //         headers: {
+        //             "Authorization": `Bearer ${token}`
+        //         },
+        //         callback(res) {
+        //             console.log(res)
+        //         }
+        //     });
+        // } catch (err) {
+        //     console.error('Error during API request:', err);
+        // }
     };
 
     useEffect(() => {
-        if (code) {
-            KakaoAccessToken(code);
-            // NaverAcessToken(code);
+        if (code && state) {
+            NaverAcessToken(code, state);
         }
-    }, [code]);
+        else{
+            KakaoAccessToken(code);
+        }
+    }, [code, state]);
 
     //카테고리 구분
     const categoryChange = (category => {
@@ -134,7 +227,6 @@ function HOM1000() {
     return (
         <div>
             <Header></Header>
-
             <section className='Container'>
                 <div className="input-group homInput" onClick={() => { navigation.pageOpen('/HOM_1010') }}>
                     <span className="input-group-text" id="basic-addon1">

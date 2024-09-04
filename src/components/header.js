@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearUserInfo } from '../store';
 
-function Header() {
+function Header({token}) {
     //로그인 모달창 열기
     const [showModal, setShowModal] = useState(false);
     const navigation = util.useNavigation();
@@ -18,6 +18,7 @@ function Header() {
 
     //로그인 유무 확인
     const userInfo = useSelector((state) => state.userInfo); // 상태 가져오기
+    // console.log(userInfo)
 
     //카카오 로그아웃
     const dispatch = useDispatch();
@@ -33,7 +34,7 @@ function Header() {
                     "Authorization": `Bearer ${userInfo.kakaoToken}`
                 },
                 callback(res) {
-                    dispatch(clearUserInfo({ userId: '1206', name: '남재상', kakaoToken: res.access_token}));
+                    dispatch(clearUserInfo());
                 }
             });
         } catch (err) {
@@ -41,48 +42,13 @@ function Header() {
         }
     };
 
-    //카카오 유저정보
-    const kakaoUserInfo = async () => {
-        try {
-            await requestApi.NetWork({
-                getYn: false,
-                method: "POST",
-                url: "https://kapi.kakao.com/v2/user/me",
-                params: {},
-                headers: {
-                    "Authorization": `Bearer ${userInfo.kakaoToken}`
-                },
-                callback(res) {
-                    console.log(res)
-                }
-            });
-        } catch (err) {
-            console.error('Error during API request:', err);
-        }
-    };
+    const logout = async () => {
+        dispatch(clearUserInfo());
+    }
 
-    const NaverUserInfo = async () => {
-        try {
-            await requestApi.NetWork({
-                getYn: false,
-                method: "POST",
-                url: "https://kapi.kakao.com/v2/user/me",
-                params: {},
-                headers: {
-                    "Authorization": `Bearer ${userInfo.kakaoToken}`
-                },
-                callback(res) {
-                    console.log(res)
-                }
-            });
-        } catch (err) {
-            console.error('Error during API request:', err);
-        }
-    };
-
-    useEffect(() => {
-        kakaoUserInfo();
-    }, [userInfo]);
+    // useEffect(() => {
+    //     kakaoUserInfo();
+    // }, [userInfo]);
 
     return (
         <>
@@ -101,7 +67,7 @@ function Header() {
                             userInfo.userId == "" ? <Button className='headBtn' onClick={() => { setShowModal(true) }}>로그인</Button> :
                                 <div>
                                     <div>로그인 됨</div>
-                                    <button onClick={kakaoLogout}>로그아웃</button>
+                                    <button onClick={logout}>로그아웃</button>
                                 </div>
                         }
                     </Navbar.Collapse>
