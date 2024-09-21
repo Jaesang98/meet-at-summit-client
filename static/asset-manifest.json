@@ -1,0 +1,30 @@
+{
+  "files": {
+    "main.css": "/meet_at_summit_publish_build/static/css/main.dad32c0f.css",
+    "main.js": "/meet_at_summit_publish_build/static/js/main.e57513ba.js",
+    "static/js/453.4be2bdbc.chunk.js": "/meet_at_summit_publish_build/static/js/453.4be2bdbc.chunk.js",
+    "static/media/naver.ico": "/meet_at_summit_publish_build/static/media/naver.0bfbbd54abb05f2676ab.ico",
+    "static/media/kakao.png": "/meet_at_summit_publish_build/static/media/kakao.3a71a16a3e81b6635fc6.png",
+    "static/media/recentcliming.jpg": "/meet_at_summit_publish_build/static/media/recentcliming.897a4d3292a14ff81d0c.jpg",
+    "index.html": "/meet_at_summit_publish_build/index.html",
+    "static/media/star.svg": "/meet_at_summit_publish_build/static/media/star.08ae6aed401fba75dde26f6302394a20.svg",
+    "static/media/chat.svg": "/meet_at_summit_publish_build/static/media/chat.c6d794730d01d799e9ea.svg",
+    "static/media/geo-alt.svg": "/meet_at_summit_publish_build/static/media/geo-alt.1f09f84df81a2c0dfcb7.svg",
+    "static/media/heart.svg": "/meet_at_summit_publish_build/static/media/heart.3c790abefa5fc456752c.svg",
+    "static/media/share.svg": "/meet_at_summit_publish_build/static/media/share.12dec37776a7f7e232c0.svg",
+    "static/media/map.svg": "/meet_at_summit_publish_build/static/media/map.5ba5bb9d0959b674417e.svg",
+    "static/media/delete.svg": "/meet_at_summit_publish_build/static/media/delete.8a96217de6ece9399335.svg",
+    "static/media/search.svg": "/meet_at_summit_publish_build/static/media/search.582e6fdae2c59f4e7b41bc2c538877cd.svg",
+    "static/media/chevron-right.svg": "/meet_at_summit_publish_build/static/media/chevron-right.597fe3d8ed529406dc9c.svg",
+    "static/media/chevron-left.svg": "/meet_at_summit_publish_build/static/media/chevron-left.7781e881e5dfed0f8ae0.svg",
+    "static/media/three-dots-vertical.svg": "/meet_at_summit_publish_build/static/media/three-dots-vertical.88ff3569a1a2b48f7a5f.svg",
+    "static/media/heart-fill.svg": "/meet_at_summit_publish_build/static/media/heart-fill.f1f9b05b1218e46820ae.svg",
+    "main.dad32c0f.css.map": "/meet_at_summit_publish_build/static/css/main.dad32c0f.css.map",
+    "main.e57513ba.js.map": "/meet_at_summit_publish_build/static/js/main.e57513ba.js.map",
+    "453.4be2bdbc.chunk.js.map": "/meet_at_summit_publish_build/static/js/453.4be2bdbc.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.dad32c0f.css",
+    "static/js/main.e57513ba.js"
+  ]
+}
