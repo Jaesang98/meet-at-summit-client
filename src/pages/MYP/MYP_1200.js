@@ -69,12 +69,12 @@ function MYP1200() {
                         </div>
                     </div>
 
-                    <div className="input-group-phone mt-3">
+                    <div class="input-group-phone mt-3">
                         <label for="phone-number">휴대폰 번호</label>
-                        <div className="phone-inputs">
-                            <input type="text" className="input-field" placeholder="000" />
-                            <input type="text" className="input-field" placeholder="0000" />
-                            <input type="text" className="input-field" placeholder="0000" />
+                        <div class="phone-inputs">
+                            <input type="text" class="input-field" placeholder="000" />
+                            <input type="text" class="input-field" placeholder="0000" />
+                            <input type="text" class="input-field" placeholder="0000" />
                         </div>
                     </div>
 

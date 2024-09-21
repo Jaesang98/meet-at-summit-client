@@ -1,6 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 
 // 각 화면 컴포넌트를 screenId 기반으로 임포트합니다
+import Table from './pages/table'
 import HEADER from './components/header'; // 헤더
 import FOOTER from './components/footer'; // 푸터
 import LOGIN from './components/login'; // 로그인 팝업
@@ -24,11 +25,11 @@ import MYP_1200 from './pages/MYP/MYP_1200'; // 마이페이지 - 내정보수�
 const Router = () => {
   return (
     <Routes>
-      <Route path="/" element={<HOM_1000 />} />
+      <Route path="/" element={<Table />} />
       <Route path="/LOGIN" element={<LOGIN />} />
       <Route path="/HEADER" element={<HEADER />} />
       <Route path="/FOOTER" element={<FOOTER />} />
-      {/* <Route path="/HOM_1000" element={<HOM_1000 />} /> */}
+      <Route path="/HOM_1000" element={<HOM_1000 />} />
       <Route path="/HOM_1010" element={<HOM_1010 />} />
       <Route path="/LOG_2010" element={<LOG_2010 />} />
       <Route path="/LOG_2020" element={<LOG_2020 />} />
